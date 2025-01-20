@@ -1,0 +1,212 @@
+____________________________________________________________________
+A- Migration
+__________________________   
+    php make artisan make:model Admin -m (migration and model)
+    1- User Migration:
+    id();
+    string('name');
+    string('user_name');
+    string('email')->unique();
+    string('phone')->unique();
+    timestamp('email_verified_at')->nullable();
+    string('password');
+    string('image');
+    boolean('status')->default(1);
+    string('street');
+    string('city');
+    string('country');
+    rememberToken();
+    timestamps();
+    2- Admin Migration:
+    id();
+    string('name');
+    string('user_name');
+    string('password');
+    string('email')->unique();
+    string('role_id');
+    timestamps();
+    3-Category Migration:
+    id();
+    string('name');
+    boolean('status')->default(1);
+    string('slug');
+    timestamps();
+    4- Post Migration:
+        id();
+        string('title');
+        longText('description');
+        boolean('comment_able')->default(1);
+        boolean('status')->default(1);
+        string('slug');
+        foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+        foreignId('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+        timestamps();
+    5- Image Post Migration:
+    id();
+    string('path');
+    foreignId('post_id')->constrained('posts')->onDelete('cascade');
+    timestamps();
+    4- Contacts Migration:
+    id();
+    string('phone')->unique();
+    string('name');
+    string('email')->unique();
+    string('title');
+    string('body');
+    string('ip_address');
+    timestamps();
+    5- Setting Migration:
+    id();
+    string('site_name');
+    string('email');
+    string('phone')->unique();
+    string('favicon');
+    string('logo');
+    string('facebook');
+    string('twitter');
+    string('youtube');
+    string('city');
+    string('country');
+    string('street');
+    timestamps();
+    6- Comments Migration:
+    id();
+    string('value');
+    string('ip_address');
+    boolean('status')->default(1);
+    foreignId('post_id')->constrained('posts')->onDelete('cascade')->onUpdate('cascade');
+    foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+    timestamps();
+
+____________________________________________________________________
+B- Factory And Seeder --> Create seeder and factory to category, contact, post, and user.
+__________________________ 
+1- Category Seeder  --> I didnot make CategoryFactory
+
+    $data = ['Mobile Category', 'Sports Category', 'Fashion Category'];
+    $date = fake()->date('Y-m-d h:m:s');
+    foreach($data as $category){
+        Category::create([
+            "name" => $item,
+            "slug" => str::slug($item), 
+            "status" => rand(0,1),
+            "created_at" => $date,
+            "updated_at" => $date,
+        ]);
+    };
+____________________________________________________________________
+Note:-
+_______
+    -Defination:-
+        - A slug is a simplified version of a string, typically URL-friendly (especially for SEO).
+        - The act of "slugging" a string usually involves converting it to one case,
+            and removing any non-URL-friendly characters 
+            (spaces, accented letters, ampersands, etc.).
+        - The resulting string can then be used as an identifier for a particular resource.
+        - It's readable, easier to type.
+        - Slugs tend to be unique as well
+        - From ( http://example.com/post/2) or (http://example.com/post/My+Dinner+With+Andr%C3%A9+%26+Fran%C3%A7ois)
+          
+          to (http://example.com/post/my-dinner-with-andre-francois)
+             (http://example.com/post/my-dinner-with-andre-francois-1)
+             (http://example.com/post/my-dinner-with-andre-francois-2)
+
+    - How can we use it?
+        1- Built in laravel
+            str::slug($item) --> هتأخد الاسم وتشيل المسافات وأي  special character وهتحط -
+                                ودي حاجه موجوده في لارفيل مش محتاج تنزلها 
+                                use Illuminate\Support\Str;
+
+        2- External package
+            1- https://github.com/spatie/laravel-sluggable
+            2- https://github.com/cviebrock/eloquent-sluggable
+                - Install it 
+                - Use it in post model
+                    - use Sluggable;
+                    - function sluggable(): array
+                        return ['slug' => ['source' => 'title']];
+
+          
+2- PostFactory
+        $date = fake()->date('Y-m-d h:m:s');
+        return [
+            'title' => fake()->sentence(3),
+            'description' => fake()->paragraph(5),
+            'comment_able' => rand(0,1),
+            'status' => rand(0,1),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'category_id' => Category::inRandomOrder()->first()->id,
+            'created_at' => $date,
+            'updated_at' => $date
+        ];
+        - ال slug خلاص هيتعمل في الباكدج
+        - User::inRandomOrder()->first()->id --> selects a random user from the users table 
+                                                 and returns the id of that user.
+__________________________________________________________________________
+3- CommentFactory
+        return [
+            'value' => fake()->paragraph(2),
+            'ip_address' => fake()->ipv4(),
+            'status' => rand(0,1),
+            'post_id' => Post::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
+        ];
+4- CommentSeeder
+        Comment::factory()->count(200)->create();
+__________________________________________________________________________
+5- ImageFactory
+        return [
+            'path' => fake()->imageUrl(),
+            // 'post_id' => Post::inRandomOrder()->first()->id,
+        ];
+        - هنا هتظهر مشكله انه مش كل البوستات هيكون ليها صوره 
+        - وانا عاوز اكون متاكد ان لكل بوست صوره 
+        - بمعني لو عملت 50 صورة هيروح يختار 50 بوست ليهم بشكل عشوائي 
+        - حتي لو عامل 100 بوست
+        - الحل هنلغي السطر الخاص ب post id
+        - وهروح وانا بعمل PostSeeder 
+        - احدد الصور هناك
+
+6- PostSeeder
+    - run()
+        $post = Post::factory()->count(50)->create();
+        $post->each(function($post){
+            Image_Post::factory(2)->create([
+                'post_id'=> $post->id,
+            ]);
+       });
+__________________________________________________________________________
+6- ContactFactory
+    return [
+        'name'=> fake()->name(),
+        'email'=> fake()->email(),
+        'phone'=> fake()->phoneNumber(),
+        'title'=> fake()->title(),
+        'body'=> fake()->paragraph(2),
+        'ip_address'=> fake()->ipv4()
+    ];
+7- ContactSeeder
+        Contact::factory()->count(30)->create();
+____________________________________________________________________
+8- AdminSeeder
+    - run()
+       Admin::create([
+        'name' => 'admin',
+        'email' => 'admin@gmail.com',
+        'username' => 'admin',
+        'password' => bcrypt('admin')
+       ]);
+____________________________________________________________________
+9- DatabaseSeeder
+    - run()
+        $this->call([
+            AdminSeeder::class,
+            UserSeeder::class,
+            CategorySeeder::class,
+            PostSeeder::class,
+            CommentSeeder::class,
+            ContactSeeder::class,
+        ]);
+
+
+
