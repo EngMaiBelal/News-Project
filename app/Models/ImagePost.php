@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class ImagePost extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'value',
-        'ip_address',
-        'status',
-        'post_id',
-        'user_id'
+        'path',
+        'post_id'
     ];
 
     public function post(){

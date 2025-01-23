@@ -19,8 +19,8 @@ class CategorySeeder extends Seeder
 
         foreach($data as $category){
             Category::create([
-                "name" => $item,
-                "slug" => str::slug($item),
+                "name" => $category,
+                "slug" => str::slug($category),
                 "status" => rand(0,1),
                 "created_at" => $date,
                 "updated_at" => $date,

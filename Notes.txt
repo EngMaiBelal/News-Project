@@ -79,7 +79,53 @@ __________________________
     timestamps();
 
 ____________________________________________________________________
-B- Factory And Seeder --> Create seeder and factory to category, contact, post, and user.
+B- Relations and Models
+____________________________________________________________________
+1- Admin
+    - use HasFactory;
+    - protected $fillable = ['name', 'user_name', 'password', 'email', 'role_id'];
+
+2- Category
+    - use HasFactory;
+    - protected $fillable = ['name', 'status', 'slug'];
+    - public function posts()
+        return $this->hasMany(Post::class, 'category_id')
+3- Post
+    - use Sluggable, HasFactory;
+    - protected $fillable = ['title', 'description', 'comment_able', 'status',
+                             'slug', 'user_id', 'category_id'];
+
+    - public function sluggable(): array
+        return ['slug' => [ 'source' => 'title' ] ];
+
+    - public function category()
+        return $this->belongsTo(Category::class, 'category_id');
+    
+    - public function user()
+        return $this->belongsTo(User::class, 'user_id');
+    
+    - public function comments()
+        return $this->hasMany(Comment::class, 'post_id');
+    
+    - public function imagePosts()
+        return $this->hasMany(ImagePost::class, 'post_id');
+    
+
+4- User 
+    - use HasFactory, Notifiable;
+    - protected $fillable = ['name', 'email', 'password', 'user_name','phone',
+                            'image', 'status', 'street', 'city','country'];
+
+    - public function posts()
+        return $this->hasMany(Post::class, 'user_id');
+
+5- Contact
+    - use HasFactory;
+    - $fillable = ['phone', 'name', 'email', 'title', 'body', 'ip_address'];
+
+
+____________________________________________________________________
+C- Factory And Seeder --> Create seeder and factory to category, contact, post, and user.
 __________________________ 
 1- Category Seeder  --> I didnot make CategoryFactory
 
@@ -154,7 +200,7 @@ __________________________________________________________________________
 4- CommentSeeder
         Comment::factory()->count(200)->create();
 __________________________________________________________________________
-5- ImageFactory
+5- ImagePostFactory
         return [
             'path' => fake()->imageUrl(),
             // 'post_id' => Post::inRandomOrder()->first()->id,
@@ -171,7 +217,7 @@ __________________________________________________________________________
     - run()
         $post = Post::factory()->count(50)->create();
         $post->each(function($post){
-            Image_Post::factory(2)->create([
+            ImagePost::factory(2)->create([
                 'post_id'=> $post->id,
             ]);
        });
