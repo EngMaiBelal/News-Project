@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +17,14 @@ class ImagePostFactory extends Factory
      */
     public function definition(): array
     {
+        $directoryUrl = Storage::url('images/');
+        $imageName = uniqid() .'.jpg';
         return [
-            'path' => fake()->imageUrl(),
-            // 'post_id' => Post::inRandomOrder()->first()->id,
+            // if i get it from storage
+            // 'path' => $directoryUrl .'/'. $imageName,
+            // 'path' => fake()->imageUrl(),
+            'path' => 'https://placehold.co/450x350',
+            'name' => $imageName
         ];
     }
 }

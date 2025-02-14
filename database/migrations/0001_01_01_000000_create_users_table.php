@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('image');
+            $table->string('image')->default('default.png');
             $table->boolean('status')->default(1);
-            $table->string('street');
-            $table->string('city');
-            $table->string('country');
+            $table->string('street')->default('default');;
+            $table->string('city')->default('default');
+            $table->string('country')->default('default');
             $table->rememberToken();
             $table->timestamps();
         });

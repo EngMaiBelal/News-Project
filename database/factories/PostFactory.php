@@ -24,6 +24,7 @@ class PostFactory extends Factory
             'description' => fake()->paragraph(5),
             'comment_able' => rand(0,1),
             'status' => rand(0,1),
+            'views_num' =>rand(0,100),
             'user_id' => User::inRandomOrder()->first()->id,
             'category_id' => Category::inRandomOrder()->first()->id,
             'created_at' => $date,
