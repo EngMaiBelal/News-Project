@@ -6,15 +6,15 @@
                 <div class="footer-widget">
                     <h3 class="title">Get in Touch</h3>
                     <div class="contact-info">
-                        <p><i class="fa fa-map-marker"></i>123 News Street, NY, USA</p>
-                        <p><i class="fa fa-envelope"></i>info@example.com</p>
-                        <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                        <p><i class="fa fa-map-marker"></i>{{ $settings->street }}, {{ $settings->country }}, {{ $settings->city }}</p>
+                        <p><i class="fa fa-envelope"></i>{{ $settings->email }}</p>
+                        <p><i class="fa fa-phone"></i>{{ $settings->phone }}</p>
                         <div class="social">
-                            <a href=""><i class="fab fa-twitter"></i></a>
-                            <a href=""><i class="fab fa-facebook-f"></i></a>
-                            <a href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a href=""><i class="fab fa-instagram"></i></a>
-                            <a href=""><i class="fab fa-youtube"></i></a>
+                            <a href="{{ $settings->twitter }}"><i class="fab fa-twitter"></i></a>
+                            <a href="{{ $settings->facebook }}"><i class="fab fa-facebook-f"></i></a>
+                            <a href="{{ $settings->youtube }}"><i class="fab fa-youtube"></i></a>
+                            {{-- <a href="{{ $settings->linked-in }}"><i class="fab fa-linkedin-in"></i></a> --}}
+                            {{-- <a href="{{ $settings->instagram }}"><i class="fab fa-instagram"></i></a> --}}
                         </div>
                     </div>
                 </div>
@@ -87,14 +87,14 @@
         <div class="row">
             <div class="col-md-6 copyright">
                 <p>
-                    Copyright &copy; <a href="">Your Site Name</a>. All Rights
+                    Copyright &copy; <a href="">{{ $settings->site_name }}</a>. All Rights
                     Reserved
                 </p>
             </div>
 
             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
             <div class="col-md-6 template-by">
-                <p>Designed By <a href="https://htmlcodex.com">HTML Codex</a></p>
+                <p>Designed By <a href="">Mai Belal</a></p>
             </div>
         </div>
     </div>

@@ -21,5 +21,3 @@ class HomeController extends Controller
         return view('frontend.index', compact('posts', 'most_views', 'oldest_news', 'popular_posts', 'categories'));
     }
 }
-// laravel ui 
-// multi guard

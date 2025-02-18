@@ -2825,51 +2825,55 @@ ____________________
             - new command line (redis-server) عشان يشتغل 
             او نزل البرنامج وخلاص وهوه هيشتغل دايما
     - عاوز بقي بمجرد ما يعمل رفريش للصفحه يجيب الحاجه من الكاش
-    - Create cache provider
-        php artisan make:provider CasheServiceProvider
+    - Create CacheServiceProvider
+        php artisan make:provider CacheServiceProvider
         الفكره بقي اني هجيب 10 بوستات من الداتابيز واعملهم كاشينج 
         ولو مسحت البوستات من الداتا بيز لازم تبقي تعمل ابديت للكاش 
+    - CacheServiceProvider extends ServiceProvider
+        - boot(): void
+            1- get data from Database
+                if(!Cache::has('read_more_posts')){
+                    $read_more_posts = Post::select('id', 'title')->latest()->get();
+                    Cache::remember('read_more_posts', 3600 , function() use( $read_more_posts ){ # key, time in second, callback
+                        return $read_more_posts;
+                    });
+                }
+            2- get data from cache
+                $read_more_posts = Cache::get('read_more_posts'); 
+            3- send data to view
+                view()->share([
+                    'read_more_posts'=> $read_more_posts,
+                ]); 
+    - to clear CaChe
+        // Cache::forget('read_more_posts');
+____________________
+Setting Dynamic
+____________________
+    1- Share Setting Data in all views
+        - CheckSettingProvider
+            - boot()
+                $settings = Setting::firstOr(function(){
+                    return Setting::create([
+                        'site_name' => 'News',
+                        'email' => 'mai.belal2127@gmail.com',
+                        'phone' => '01019063522',
+                        'favicon' => 'logo.jpg',
+                        'logo' => 'logo.jpg',
+                        'facebook' => 'https://www.facebook.com',
+                        'twitter' => 'https://www.twitter.com',
+                        'youtube' => 'https://www.youtube.com',
+                        'city' => 'Egypt',
+                        'country' => 'Cairo',
+                        'street' => '123 News Street'
+                    ]);            
+                });
+                view()->share([ 'settings' => $settings ]);
+    2- In Footer and Header View
+        <p><i class="fas fa-envelope"></i>{{ $settings->email }}</p>
+        <p><i class="fas fa-phone-alt"></i>{{ $settings->phone }}</p>
+        <a href="{{ $settings->twitter }}" title="twitter"><i class="fab fa-twitter"></i></a>
+        <a href="{{ $settings->facebook }}" title="facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="{{ $settings->youtube }}" title="youtube"><i class="fab fa-youtube"></i></a>
 
-
-
-
-        <?php
-
-namespace App\Providers;
-
-use App\Models\Post;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Cache;
-class CasheServiceProvider extends ServiceProvider
-{
-    /**
-     * Register services.
-     */
-    public function register(): void
-    {
-        //
-    }
-
-    /**
-     * Bootstrap services.
-     */
-    public function boot(): void
-    {
-        // get data from Database
-        if(Cache::has('read_more_posts')){
-            $read_more_posts = Post::select('id', 'title')->latest()->get();
-            Cache::remember('read_more_posts', 3600 , function() use( $read_more_posts ){ # key, time in second, callback
-                return $read_more_posts;
-            });
-        }
-
-        // get data from cache
-        $read_more_posts = Cache::get('read_more_posts'); 
-
-        // send data to view
-        view()->share([
-            'read_more_posts'=> $read_more_posts,
-        ]);
-
-    }
-}
+    3- For SEO 
+        any href must be have title

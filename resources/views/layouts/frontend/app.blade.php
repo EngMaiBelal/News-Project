@@ -907,7 +907,8 @@
         </style>
     @endif --}}
     <!-- Favicon -->
-    <link href=@asset{{ '../../../assets/frontend/img/favicon.ico' }} rel="icon" />
+    {{-- <link href=@asset{{ '../../../assets/frontend/img/favicon.ico' }} rel="icon" /> --}}
+    <link href={{ Storage::url('images/' . $settings->favicon) }} rel="icon" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet" />

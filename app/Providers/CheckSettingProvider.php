@@ -20,20 +20,23 @@ class CheckSettingProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Setting::firstOr(function(){
+        $settings = Setting::firstOr(function(){
             return Setting::create([
                 'site_name' => 'News',
                 'email' => 'mai.belal2127@gmail.com',
                 'phone' => '01019063522',
-                'favicon' => 'default',
-                'logo' => 'default',
-                'facebook' => 'default',
-                'twitter' => 'default',
-                'youtube' => 'default',
-                'city' => 'default',
-                'country' => 'default',
-                'street' => 'default'
-            ]);
+                'favicon' => 'logo.jpg',
+                'logo' => 'logo.jpg',
+                'facebook' => 'https://www.facebook.com',
+                'twitter' => 'https://www.twitter.com',
+                'youtube' => 'https://www.youtube.com',
+                'city' => 'Egypt',
+                'country' => 'Cairo',
+                'street' => '123 News Street'
+            ]);            
         });
+        view()->share([
+            'settings' => $settings
+        ]);
     }
 }
