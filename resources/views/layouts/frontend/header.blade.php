@@ -10,10 +10,10 @@
             </div>
             <div class="col-md-6">
                 <div class="tb-menu">
-                    <a href="{{ route('about.index') }}">About</a>
-                    <a href="{{ route('privacy.index') }}">Privacy</a>
-                    <a href="{{ route('terms.index') }}">Terms</a>
-                    <a href="{{ route('contact.index') }}">Contact</a>
+                    <a href="{{ route('home.about') }}">About</a>
+                    <a href="{{ route('home.privacy') }}">Privacy</a>
+                    <a href="{{ route('home.terms') }}">Terms</a>
+                    <a href="{{ route('home.contact') }}">Contact</a>
                 </div>
             </div>
         </div>
@@ -26,16 +26,16 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-3 col-md-4">
-                <div class="b-logo">
-                    <a href="index.html">
-                        <img src={{ Storage::url('images/' . $settings->logo) }} alt="Logo" width="25%"/>
+                <div>
+                    <a href="index.html" >
+                        <img src={{ Storage::url('images/' . $settings->logo) }} alt="Logo" style="width: 100px; border-radius:50px !important"/>
                     </a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-4">
-                <div class="b-ads" style="border:1px black solid">
-                    <a href="https://htmlcodex.com" class="m-auto">
-                        <img src={{ Storage::url('images/ads-1.jpg') }} alt="Ads" style="width:150px;" class="m-auto"/>
+                <div class="b-ads">
+                    <a href="" class="m-auto">
+                        {{-- <img src={{ Storage::url('images/ads-1.jpg') }} alt="Ads" style="width:150px;" class="m-auto"/> --}}
                     </a>
                 </div>
             </div>

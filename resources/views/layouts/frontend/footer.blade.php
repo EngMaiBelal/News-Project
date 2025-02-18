@@ -25,13 +25,8 @@
                     <h3 class="title">Useful Links</h3>
                     <ul>
                         @foreach ($related_sites as $site)
-                        <li><a href="{{ $site->url }}" title="{{ $site->name }}"> {{ $site->name }} </a></li>
+                            <li><a href="{{ $site->url }}" title="{{ $site->name }}"> {{ $site->name }} </a></li>
                         @endforeach
-                        {{-- <li><a href="#">Lorem ipsum</a></li>
-                        <li><a href="#">Pellentesque</a></li>
-                        <li><a href="#">Aenean vulputate</a></li>
-                        <li><a href="#">Vestibulum sit amet</a></li>
-                        <li><a href="#">Nam dignissim</a></li> --}}
                     </ul>
                 </div>
             </div>
@@ -57,8 +52,13 @@
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                             Vivamus sed porta dui. Class aptent taciti sociosqu
                         </p>
-                        <form>
-                            <input class="form-control" type="email" placeholder="Your email here" />
+                        
+                        <form action={{ route('home.news.subscriber')}} method="post">
+                            @csrf
+                            <input name="email" class="form-control" type="email" placeholder="Your email here" />
+                            @error('email')
+                                <div class="text-danger"> {{ $message }} </div>
+                            @enderror
                             <button class="btn">Submit</button>
                         </form>
                     </div>

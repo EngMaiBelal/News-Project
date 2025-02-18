@@ -139,7 +139,7 @@ ____________________
                 - A slug is a simplified version of a string, typically URL-friendly (especially for SEO).
                 - The act of "slugging" a string usually involves converting it to one case,
                     and removing any non-URL-friendly characters 
-                    (spaces, accented letters, ampersands, etc.).
+                    (spaces, accented Subscribers, ampersands, etc.).
                 - The resulting string can then be used as an identifier for a particular resource.
                 - It's readable, easier to type.
                 - Slugs tend to be unique as well
@@ -2878,7 +2878,7 @@ ____________________
     3- For SEO 
         any href must be have title
 ____________________
-Useful Links
+Useful Links  لينكات هيضقها الادمن ليها 
 ____________________
         1- php artisan make:migration create_related_sites_table
             - In migration table   
@@ -2923,3 +2923,90 @@ ____________________
                 @foreach ($related_sites as $site)
                     <li><a href="{{ $site->url }}" title="{{ $site->name }}"> {{ $site->name }} </a></li>
                  @endforeach
+
+____________________
+News Subscriber  لينكات هيضقها الادمن ليها 
+____________________
+        1- php artisan make:model NewsSubscriber -m (model, table)
+            - In migration table   
+                $table->id();
+                $table->string('email')->unique();
+                $table->timestamps();
+            - php artisan migrate
+
+        2- In NewsSubscriber Model
+                protected $fillable = [
+                    'email',
+                ];
+        3- php artisan make:controller frontend/NewsSubscriberController 
+        4- In web.php
+            Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
+                Route::get('/', [HomeController::class, 'index'])->name('index');
+                Route::post('/news-subscriber', [NewsSubscriberController::class, 'store'])->name('news.subscriber');
+                Route::get('contact', [ContactController::class, 'index'])->name('contact');
+                Route::get('terms', [TermsController::class, 'index'])->name('terms');
+                Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
+                Route::get('about', [AboutController::class, 'index'])->name('about');
+            });
+        5- In Footer View
+                NewsLetter
+                <form action={{ route('home.news.subscriber')}} method="post">
+                    @csrf
+                    <input name="name" class="form-control" type="email" placeholder="Your email here" />
+                    <button class="btn">Submit</button>
+                </form>
+        6- In Controller
+            - store(NewsSubscriberRequest $request)
+                $validated_subscriber = $request->validated();
+                $NewsSubscriber = NewsSubscriber::create([ 'email'=> $validated_subscriber['email'] ]);
+                - Handel Errors By https://github.com/php-flasher/flasher-laravel
+                    if(!$NewsSubscriber){ # مشكله في الاتصال بالداتابيز
+                        flash()->error('Sorry Try Again Later!');
+                    }
+                    flash()->success('Operation completed successfully!');
+                    return redirect()->back();
+
+                - Handel Validation Errors
+                    <input name="email" class="form-control" type="email" placeholder="Your email here" />
+                    @error('email')
+                        <div class="text-danger"> {{ $message }} </div>
+                    @enderror
+
+        7- Install PHPFlasher Laravel Adapter Package Steps
+            composer require php-flasher/flasher-laravel
+            php artisan flasher:install
+            php artisan flasher:install --config
+        8- I need to send mail to user that suscribes the news website
+            - use mail trap
+            - .env
+                # Looking to send emails in production? Check out our Email API/SMTP product!
+                MAIL_MAILER=smtp
+                MAIL_HOST=smtp.mailtrap.io
+                MAIL_PORT=587
+                MAIL_USERNAME=d73775345c668d
+                MAIL_PASSWORD=ce5ab192da04c6
+                MAIL_ENCRYPTION=tls
+                MAIL_FROM_ADDRESS="News@example.com"
+                MAIL_FROM_NAME="News Website"
+
+            
+            - php artisan make:mail frontend/NewSubscriberMail هفصل الايميلات
+            - php artisan make:mail frontend/NewSubscriberMail --markdown=foldername.file-blade-name هيعمل كمان ال view
+            - add in controller 
+
+                // Send Mail
+                Mail::to($validated_subscriber['email'])->send(new NewsSubscriberMail());
+
+            - add in news-subscriber view
+                <x-mail::message>
+# Introduction
+
+Thanks For Subscribe.
+
+<x-mail::button :url="route('home.index')">
+    visit News Website
+</x-mail::button>
+
+Thanks,<br>
+{{ config('app.name') }}
+</x-mail::message>
