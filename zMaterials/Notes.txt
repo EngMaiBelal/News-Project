@@ -2877,3 +2877,49 @@ ____________________
 
     3- For SEO 
         any href must be have title
+____________________
+Useful Links
+____________________
+        1- php artisan make:migration create_related_sites_table
+            - In migration table   
+                $table->id();
+                $table->string('name');
+                $table->string('url');
+                $table->boolean('status')->default(1);
+                $table->timestamps();
+            - php artisan migrate
+        2- php artisan make:model RelatedSite
+            - In RelatedSite Model
+                protected $fillable = [
+                    'name',
+                    'url',
+                    'status',
+                ];
+        3- php artisan make:seeder RelatedSiteSeeder
+            هنعمل فكره جديد اننا منحتاجش لfactory
+            - In RelatedSiteSeeder
+                - use Faker\Factory;
+                - RelatedSiteSeeder
+                    - run()
+                        $faker = Factory::create(); # instance
+                        for( $i = 0; $i < 5; $i++){
+                            RelatedSite::create([
+                                'name' => $faker->sentence(1),
+                                'url' => $faker->url()
+                            ]);
+                        }
+        4- Add RelatedSiteSeeder in DatabaseSeeder
+            - run()
+                 $this->call([
+                    RelatedSiteSeeder::class,
+                 ])
+            - php artisan db:seed --class=RelatedSiteSeeder
+        5- php artisan make:provider SharedDataServiceProvider
+                $related_sites = RelatedSite::select('name','url')->get();
+                    view()->share([
+                        'related_links' => $related_sites
+                    ]);
+        6- In Footer View
+                @foreach ($related_sites as $site)
+                    <li><a href="{{ $site->url }}" title="{{ $site->name }}"> {{ $site->name }} </a></li>
+                 @endforeach
