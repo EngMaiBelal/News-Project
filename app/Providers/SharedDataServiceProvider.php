@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
+use App\Models\Category;
 use App\Models\RelatedSite;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class SharedDataServiceProvider extends ServiceProvider
@@ -20,12 +23,32 @@ class SharedDataServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if(!Cache::has('latest_posts')){
+            $latest_posts = Post::select('slug', 'title', 'created_at', 'id')->latest()->limit(3)->get();
+            Cache::remember('latest_posts', 3600, function() use($latest_posts){
+                return $latest_posts;
+            });
+        }
+
+        if(!Cache::has('popular_posts')){
+            $popular_posts = Post::withCount('comments')->with('comments')->limit(3)->orderBy('comments_count', 'desc')->get();
+            Cache::remember('popular_posts', 3600, function() use($popular_posts){
+                return $popular_posts;
+            });
+        }
+        $latest_posts = Cache::get('latest_posts');
+        $popular_posts =  Cache::get('popular_posts');
+
         $related_sites = RelatedSite::select('name','url')->get();
+        $categories = Category::withCount('posts')->get();
+        $most_views = Post::orderBy('views_num', 'desc')->with('imagePosts')->limit(3)->get();
+
         view()->share([
-            'related_sites' => $related_sites
+            'related_sites' => $related_sites,
+            'categories' => $categories,
+            'most_views' => $most_views,
+            'popular_posts' => $popular_posts ,
+            'latest_posts' => $latest_posts
         ]);
-        // View::share('model1Data', Cache::remember('model1_data', now()->addMinutes(10), function() {
-        //     return Model1::all();
-        // }));
     }
 }

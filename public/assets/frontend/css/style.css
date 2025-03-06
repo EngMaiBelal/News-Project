@@ -9,7 +9,7 @@ body {
 }
 
 a {
-  color: #bb9b5e;
+  color: #63b59f;
   transition: 0.5s;
 }
 
@@ -48,7 +48,7 @@ h6 {
 .back-to-top {
   position: fixed;
   display: none;
-  background: #bb9b5e;
+  background: #63b59f;
   color: #ffffff;
   width: 35px;
   height: 35px;
@@ -87,7 +87,7 @@ h6 {
 .form-control:focus,
 .custom-select:focus {
   box-shadow: none;
-  border-color: #bb9b5e;
+  border-color: #63b59f;
 }
 
 .custom-radio,
@@ -103,7 +103,7 @@ h6 {
 .custom-radio .custom-control-input:checked ~ .custom-control-label::before,
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
   color: #ffffff;
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 button.btn {
@@ -114,22 +114,22 @@ button.btn {
 
 button.btn:hover {
   color: #ffffff;
-  background: #bb9b5e;
-  border-color: #bb9b5e;
+  background: #63b59f;
+  border-color: #63b59f;
 }
 
 /**********************************/
 /*********** Top Bar CSS **********/
 /**********************************/
 .top-bar {
-  padding: 2px 0;
+  padding: 3px 0;
   background: #000000;
 }
 
 .top-bar .tb-contact p {
   display: inline-block;
   margin: 0;
-  color: #bb9b5e;
+  color: #ffffff;
   font-size: 14px;
 }
 
@@ -147,7 +147,7 @@ button.btn:hover {
 }
 
 .top-bar .tb-menu a {
-  color: #bb9b5e;
+  color: #ffffff;
   font-size: 14px;
   margin: 0 8px;
 }
@@ -164,7 +164,7 @@ button.btn:hover {
   position: absolute;
   content: "/";
   margin: 1px 0 0 6px;
-  color: #bb9b5e;
+  color: #ffffff;
   font-size: 14px;
 }
 
@@ -220,7 +220,7 @@ button.btn:hover {
 }
 
 .brand .b-search input[type="text"]:focus {
-  border-color: #bb9b5e;
+  border-color: #63b59f;
 }
 
 .brand .b-search button {
@@ -231,12 +231,12 @@ button.btn:hover {
   right: 15px;
   border: none;
   background: none;
-  color: #bb9b5e;
+  color: #63b59f;
   border-radius: 0 4px 4px 0;
 }
 
 .brand .b-search button:hover {
-  background: #bb9b5e;
+  background: #63b59f;
   color: #ffffff;
 }
 
@@ -303,7 +303,7 @@ button.btn:hover {
 @media (min-width: 768px) {
   .nav-bar,
   .nav-bar .navbar {
-    background: #bb9b5e !important;
+    background: #63b59f !important;
   }
 
   .nav-bar .navbar-brand {
@@ -321,7 +321,7 @@ button.btn:hover {
   .nav-bar,
   .nav-bar .navbar {
     padding: 3px 0;
-    background: #bb9b5e !important;
+    background: #63b59f !important;
   }
 
   .nav-bar a.nav-link {
@@ -350,7 +350,7 @@ button.btn:hover {
   padding: 3px 0;
   text-align: center;
   font-size: 14px;
-  background: #bb9b5e;
+  background: #63b59f;
   border: 1px solid #ffffff;
   border-radius: 4px;
 }
@@ -365,7 +365,7 @@ button.btn:hover {
 }
 
 .nav-bar .social a:hover i {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 /**********************************/
@@ -422,7 +422,7 @@ button.btn:hover {
 }
 
 .top-news .tn-title a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .top-news .tn-left {
@@ -462,7 +462,7 @@ button.btn:hover {
 .top-news .slick-next:hover,
 .top-news .slick-next:focus {
   color: #ffffff;
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 .top-news .slick-prev::before,
@@ -541,7 +541,7 @@ button.btn:hover {
 }
 
 .cat-news .cn-title a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .cat-news .slick-prev,
@@ -569,7 +569,7 @@ button.btn:hover {
 .cat-news .slick-next:hover,
 .cat-news .slick-next:focus {
   color: #ffffff;
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 .cat-news .slick-prev::before,
@@ -608,7 +608,7 @@ button.btn:hover {
 .tab-news .nav.nav-pills .nav-link:hover,
 .tab-news .nav.nav-pills .nav-link.active {
   color: #ffffff;
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 .tab-news .tab-content {
@@ -643,7 +643,7 @@ button.btn:hover {
 }
 
 .tab-news .tn-title a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 /**********************************/
@@ -699,7 +699,7 @@ button.btn:hover {
 }
 
 .main-news .mn-title a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .main-news .mn-list {
@@ -743,7 +743,7 @@ button.btn:hover {
 }
 
 .main-news .mn-list ul li a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 /**********************************/
@@ -851,7 +851,7 @@ button.btn:hover {
 }
 
 .single-news .sn-slider .sn-title a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .single-news .sn-slider .slick-prev,
@@ -879,7 +879,7 @@ button.btn:hover {
 .single-news .sn-slider .slick-next:hover,
 .single-news .sn-slider .slick-next:focus {
   color: #ffffff;
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 .single-news .sn-slider .slick-prev::before,
@@ -950,7 +950,7 @@ button.btn:hover {
 }
 
 .sidebar .news-list .nl-item .nl-title a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .sidebar .sidebar-widget .tab-news {
@@ -967,7 +967,7 @@ button.btn:hover {
 .sidebar .tab-news .nav.nav-pills .nav-link:hover,
 .sidebar .tab-news .nav.nav-pills .nav-link.active {
   color: #ffffff;
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 .sidebar .tab-news .tab-content {
@@ -1005,7 +1005,7 @@ button.btn:hover {
 }
 
 .sidebar .tab-news .tn-title a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .sidebar .sidebar-widget .category {
@@ -1033,7 +1033,7 @@ button.btn:hover {
 }
 
 .sidebar .category ul li a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .sidebar .category ul li::before {
@@ -1066,8 +1066,8 @@ button.btn:hover {
 
 .sidebar .sidebar-widget .tags a:hover {
   color: #ffffff;
-  background: #bb9b5e;
-  border: 1px solid #bb9b5e;
+  background: #63b59f;
+  border: 1px solid #63b59f;
 }
 
 .sidebar .sidebar-widget .image a {
@@ -1133,8 +1133,8 @@ button.btn:hover {
 }
 
 .contact .social a:hover {
-  background: #bb9b5e;
-  border-color: #bb9b5e;
+  background: #63b59f;
+  border-color: #63b59f;
 }
 
 .contact .social a:hover i {
@@ -1199,7 +1199,7 @@ button.btn:hover {
 
 .footer .footer-widget ul li a:hover {
   padding-left: 10px;
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .footer .contact-info p {
@@ -1235,7 +1235,7 @@ button.btn:hover {
 }
 
 .footer .social a:hover {
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 .footer .social a:hover i {
@@ -1276,7 +1276,7 @@ button.btn:hover {
 }
 
 .footer .newsletter .btn:hover {
-  background: #bb9b5e;
+  background: #63b59f;
 }
 
 .footer .newsletter input:focus,
@@ -1311,7 +1311,7 @@ button.btn:hover {
 }
 
 .footer-menu .f-menu a:hover {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 .footer-menu .f-menu a:last-child {
@@ -1349,13 +1349,13 @@ button.btn:hover {
 }
 
 .comment-input input:focus {
-  border-color: #bb9b5e;
+  border-color: #63b59f;
   outline: none;
 }
 
 .comment-input button {
   padding: 12px 20px;
-  background-color: #bb9b5e;
+  background-color: #63b59f;
   color: white;
   border: none;
   border-radius: 25px;
@@ -1365,7 +1365,7 @@ button.btn:hover {
 }
 
 .comment-input button:hover {
-  background-color: #e65a50;
+  background-color: #000000;
 }
 
 .comments {
@@ -1385,7 +1385,7 @@ button.btn:hover {
   height: 45px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #bb9b5e;
+  border: 2px solid #63b59f;
 }
 
 .comment-content {
@@ -1398,7 +1398,7 @@ button.btn:hover {
 
 .username {
   font-weight: bold;
-  color: #bb9b5e;
+  color: #63b59f;
   display: block;
   margin-bottom: 4px;
 }
@@ -1411,7 +1411,7 @@ button.btn:hover {
 
 .show-more-btn {
   padding: 10px 20px;
-  background-color: #bb9b5e;
+  background-color: #63b59f;
   color: white;
   border: none;
   border-radius: 25px;
@@ -1423,7 +1423,7 @@ button.btn:hover {
 }
 
 .show-more-btn:hover {
-  background-color: #e65a50;
+  background-color: #000000;
 }
 
 /**********************************/
@@ -1465,7 +1465,7 @@ button.btn:hover {
 
 .menu-item:hover,
 .menu-item.active {
-  background-color: #bb9b5e;
+  background-color: #63b59f;
   color: white;
 }
 
@@ -1486,7 +1486,7 @@ button.btn:hover {
 }
 
 h2 {
-  color: #bb9b5e;
+  color: #63b59f;
 }
 
 /* User Profile Styles */
@@ -1593,7 +1593,7 @@ h2 {
 
 .post-btn {
   padding: 10px 20px;
-  background-color: #bb9b5e;
+  background-color: #63b59f;
   color: white;
   border: none;
   border-radius: 5px;
@@ -1602,7 +1602,7 @@ h2 {
 }
 
 .post-btn:hover {
-  background-color: #e65a50;
+  background-color: #000000;
 }
 
 /* User Posts Styles */
@@ -1653,12 +1653,12 @@ h2 {
 }
 
 .edit-post-btn {
-  background-color: #bb9b5e;
+  background-color: #63b59f;
   color: white;
 }
 
 .edit-post-btn:hover {
-  background-color: #e65a50;
+  background-color: #000000;
 }
 
 .delete-post-btn {
@@ -1698,7 +1698,7 @@ h2 {
 
 .save-settings-btn {
   padding: 10px 20px;
-  background-color: #bb9b5e;
+  background-color: #63b59f;
   color: white;
   border: none;
   border-radius: 5px;
@@ -1707,7 +1707,7 @@ h2 {
 }
 
 .save-settings-btn:hover {
-  background-color: #e65a50;
+  background-color: #000000;
 }
 
 /* Responsive Design */
@@ -1798,4 +1798,23 @@ h2 {
   .footer-bottom .template-by {
     text-align: center;
   }
+}
+/* Customizing pagination button colors */
+.pagination .page-item .page-link {
+  background-color: #000000; /* Button background color */
+  color: white; /* Button text color */
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #63b59f;; /* Hover background color */
+  color: white; /* Hover text color */
+  box-shadow: 0 4px 8px #63b59f; /* Box shadow with color */
+  border-color: #63b59f;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #63b59f;; /* Active page button color */
+  color: white; /* Active page text color */
+  box-shadow:  0 4px 8px #63b59f; /* Box shadow with color */
+  border-color: #63b59f;
 }

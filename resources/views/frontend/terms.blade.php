@@ -1,5 +1,8 @@
 
 @extends('layouts.frontend.app')
+@section('header')
+    @include('layouts.frontend.header')
+@endsection
 
 @section('content')
     <div class="tab-news">
@@ -16,4 +19,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('footer')
+    @include('layouts.frontend.footer')
 @endsection

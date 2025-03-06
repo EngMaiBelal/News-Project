@@ -1,8 +1,10 @@
 @extends('layouts.frontend.app')
+@section('header')
+    @include('layouts.frontend.header')
+@endsection
 
 @section('content')
     @php
-        $latest_three_posts = $posts->take(3);
         $main_posts = $posts->take(4);
     @endphp
     <!-- Top News Start-->
@@ -11,12 +13,12 @@
             <div class="row">
                 <div class="col-md-6 tn-left">
                     <div class="row tn-slider">
-                        @foreach ($latest_three_posts as $post)
+                        @foreach ($latest_posts as $post)
                             <div class="col-md-6">
                                 <div class="tn-img">
                                     <img src={{ $post->imagePosts->first()->path }} />
                                     <div class="tn-title">
-                                        <a href="">{{ $post->title }}</a>
+                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +32,7 @@
                                 <div class="tn-img">
                                     <img src={{ $post->imagePosts->first()->path }} />
                                     <div class="tn-title">
-                                        <a href="">{{ $post->title }}</a>
+                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +57,7 @@
                                     <div class="cn-img">
                                         <img src="{{ $post->imagePosts->first()->path }}" />
                                         <div class="cn-title">
-                                            <a href=""> {{ $post->title }} </a>
+                                            <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -92,8 +94,8 @@
                                         <img src={{ $post->imagePosts->first()->path }} />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">{{ $post->title }}</a>
-                                        <p class="" style="color:#ee872d">Comments Number: ( {{ $post->comments_count }} )</a>
+                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <p class="" style="color:#63b59f">Comments Number: ( {{ $post->comments_count }} )</a>
                                     </div>
                                 </div>
                             @endforeach
@@ -107,8 +109,8 @@
                                         <img src={{ $post->imagePosts->first()->path }} />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">{{ $post->title }}</a>
-                                        <p class="pt-2" style="color: #ee872d">{{ $post->created_at }}</p>
+                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <p class="pt-2" style="color: #63b59f">{{ $post->created_at }}</p>
                                     </div>
                                 </div>
                             @endforeach
@@ -132,14 +134,14 @@
                     <div class="tab-content">
                         <!-- Latest News -->
                         <div id="l-news" class="container tab-pane active">
-                            @foreach ($latest_three_posts as $post)
+                            @foreach ($latest_posts as $post)
                                 <div class="tn-news">
                                     <div class="tn-img">
                                         <img src={{ $post->imagePosts->first()->path }} />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">{{ $post->title }}</a>
-                                        <p class="pt-2" style="color: #ee872d">{{ $post->created_at }}</p>
+                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <p class="pt-2" style="color: #63b59f">{{ $post->created_at }}</p>
                                     </div>
                                 </div>
                             @endforeach
@@ -153,8 +155,8 @@
                                         <img src="{{ $post->imagePosts->first()->path }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">{{ $post->title }}</a>
-                                        <p class="" style="color: #ee872d">Views Number: ( {{ $post->views_num }} )</p>
+                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <p class="" style="color: #63b59f">Views Number: ( {{ $post->views_num }} )</p>
                                     </div>
                                 </div>
                             @endforeach
@@ -179,7 +181,7 @@
                                     <img src="{{ $post->imagePosts->first()->path }}" />
                                     {{-- <img src="{{ Storage::url('images/' . $post->imagePosts->first()->name)}}" /> --}}
                                     <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
+                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -196,8 +198,8 @@
                             @if($read_more_posts && $read_more_posts->isNotEmpty())
                             @foreach($read_more_posts as $post)
                                 <li>
-                                    <a href="">{{ $post->title }}</a>
-                                    <p class="pt-2" style="color: #ee872d">{{ $post->created_at }}</p>
+                                    <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                    <p class="pt-2" style="color: #63b59f">{{ $post->created_at }}</p>
                                 </li>
                             @endforeach
                         </ul>
@@ -211,3 +213,8 @@
     </div>
     <!-- Main News End-->
 @endsection
+
+@section('footer')
+    @include('layouts.frontend.footer')
+@endsection
+

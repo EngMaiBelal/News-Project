@@ -28,14 +28,15 @@
             <div class="col-lg-3 col-md-4">
                 <div>
                     <a href="index.html" >
-                        <img src={{ Storage::url('images/' . $settings->logo) }} alt="Logo" style="width: 100px; border-radius:50px !important"/>
+                        <img src={{ Storage::url('images/' . $settings->logo) }} alt="Logo" style="width: 5rem; border-radius:2.5rem !important"/>
                     </a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-4">
                 <div class="b-ads">
                     <a href="" class="m-auto">
-                        {{-- <img src={{ Storage::url('images/ads-1.jpg') }} alt="Ads" style="width:150px;" class="m-auto"/> --}}
+                        <img src={{ Storage::url('images/download.jpg') }}
+                            alt="Image" width="320px" height="100px"/>
                     </a>
                 </div>
             </div>
@@ -61,17 +62,18 @@
 
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav mr-auto">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="{{route('home.index')}}" class="nav-item nav-link active">Home</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Categories</a>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Sub Item 1</a>
-                            <a href="#" class="dropdown-item">Sub Item 2</a>
+                            @foreach ( $categories as $category)
+                                <a href="{{route('home.show.category', $category->slug)}}" class="dropdown-item" title="{{  $category->name }}">{{ $category->name }}</a>
+                            @endforeach
                         </div>
                     </div>
-                    <a href="single-page.html" class="nav-item nav-link">Single Page</a>
-                    <a href="dashboard.html" class="nav-item nav-link">Dashboard</a>
-                    <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+                    <a href="{{ route('home.about')}}" class="nav-item nav-link">Single Page</a>
+                    <a href="{{ route('dashboard') }}" class="nav-item nav-link">Dashboard</a>
+                    <a href="{{ route('home.contact') }}" class="nav-item nav-link">Contact Us</a>
                 </div>
                 <div class="social ml-auto">
                     <a href="{{ $settings->twitter }}" title="twitter"><i class="fab fa-twitter"></i></a>

@@ -1,5 +1,8 @@
 
 @extends('layouts.frontend.app')
+@section('header')
+    @include('layouts.frontend.header')
+@endsection
 
 @section('content')
     <!-- Breadcrumb Start -->
@@ -63,7 +66,7 @@
                 The contact form is currently inactive. Get a functional and
                 working contact form with Ajax & PHP in a few minutes. Just copy
                 and paste the files, add a little code and you're done.
-                <a href="https://htmlcodex.com/contact-form">Download Now</a>.
+                <a href="/contact-form">Download Now</a>.
               </p>
               <h4><i class="fa fa-map-marker"></i>123 News Street, NY, USA</h4>
               <h4><i class="fa fa-envelope"></i>info@example.com</h4>
@@ -81,4 +84,8 @@
       </div>
     </div>
     <!-- Contact End -->
+@endsection
+
+@section('footer')
+    @include('layouts.frontend.footer')
 @endsection

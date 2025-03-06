@@ -14,7 +14,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $data = ['Mobile Category', 'Sports Category', 'Fashion Category', 'Cloth Category'];
+        $data = ['Mobile Category', 'Sports Category', 'Fashion Category', 'Clothe Category'];
         $date = fake()->date('Y-m-d h:m:s');
 
         foreach($data as $category){

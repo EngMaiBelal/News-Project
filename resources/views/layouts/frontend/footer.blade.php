@@ -95,7 +95,7 @@
                 </p>
             </div>
 
-            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "/credit-removal". Thank you for your support. ***/-->
             <div class="col-md-6 template-by">
                 <p>Designed By <a href="">Mai Belal</a></p>
             </div>
@@ -110,8 +110,8 @@
  <!-- JavaScript Libraries -->
  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
- <script src=@asset{{"../../assets/frontend/lib/easing/easing.min.js"}}></script>
- <script src=@asset{{"../../assets/frontend/lib/slick/slick.min.js"}}></script>
+ <script src={{asset("assets/frontend/lib/easing/easing.min.js")}}></script>
+ <script src={{asset("assets/frontend/lib/slick/slick.min.js")}}></script>
 
  <!-- Template Javascript -->
- <script src=@asset{{"../../assets/frontend/js/main.js"}}></script>
+ <script src={{asset("assets/frontend/js/main.js")}}></script>
