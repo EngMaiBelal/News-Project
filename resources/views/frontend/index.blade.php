@@ -21,7 +21,7 @@
                                 <div class="tn-img">
                                     <img src={{ $post->imagePosts->first()->path }} />
                                     <div class="tn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                                 <div class="tn-img">
                                     <img src={{ $post->imagePosts->first()->path }} />
                                     <div class="tn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                                     <div class="cn-img">
                                         <img src="{{ $post->imagePosts->first()->path }}" />
                                         <div class="cn-title">
-                                            <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                            <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@
                                         <img src={{ $post->imagePosts->first()->path }} />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                         <p class="" style="color:#63b59f">Comments Number: ( {{ $post->comments_count }} )</a>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
                                         <img src={{ $post->imagePosts->first()->path }} />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                         <p class="pt-2" style="color: #63b59f">{{ $post->created_at }}</p>
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
                                         <img src={{ $post->imagePosts->first()->path }} />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                         <p class="pt-2" style="color: #63b59f">{{ $post->created_at }}</p>
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                                         <img src="{{ $post->imagePosts->first()->path }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                         <p class="" style="color: #63b59f">Views Number: ( {{ $post->views_num }} )</p>
                                     </div>
                                 </div>
@@ -184,7 +184,7 @@
                                     <img src="{{ $post->imagePosts->first()->path }}" />
                                     {{-- <img src="{{ Storage::url('images/' . $post->imagePosts->first()->name)}}" /> --}}
                                     <div class="mn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +201,7 @@
                             @if($read_more_posts && $read_more_posts->isNotEmpty())
                             @foreach($read_more_posts as $post)
                                 <li>
-                                    <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                    <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     <p class="pt-2" style="color: #63b59f">{{ $post->created_at }}</p>
                                 </li>
                             @endforeach

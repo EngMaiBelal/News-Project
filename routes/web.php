@@ -19,13 +19,21 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
     Route::get('terms', [TermsController::class, 'index'])->name('terms');
     Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
     Route::get('about', [AboutController::class, 'index'])->name('about');
-    Route::get('show-category/{category:slug}', [CategoryController::class, '__invoke'])->name('show.category');
-    Route::resource('posts', PostController::class)->except(['show']);
-    Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post.show');
-    Route::get('/posts/comments/{post:slug}', [CommentController::class, 'show'])->name('post.comments.show');
-    Route::post('/posts/comments/add-comment', [CommentController::class, 'store'])->name('post.comments.store');
-    Route::get('contact-us', [ContactController::class, 'index'])->name('contact.index');
-    Route::post('contact-us/store', [ContactController::class, 'store'])->name('contact.store');
+
+    Route::get('show-category/{category:slug}', [CategoryController::class, '__invoke'])->name('category.show');
+    
+    Route::group(['prefix'=> '/posts', 'as'=> 'posts.'],function () {
+        Route::resource('/', PostController::class)->except(['show']);
+        Route::get('/{post:slug}', [PostController::class, 'show'])->name('show');
+        Route::group(['prefix'=> '/comments', 'as'=> 'comments.'],function(){
+            Route::get('/{post:slug}', [CommentController::class, 'show'])->name('show');
+            Route::post('/add-comment', [CommentController::class, 'store'])->name('store');
+        });
+    });
+    Route::group(['prefix'=> '/contact-us', 'as'=> 'contact.'],function(){
+        Route::get('/', [ContactController::class, 'index'])->name('index');
+        Route::post('/store', [ContactController::class, 'store'])->name('store');
+    });
 });
 
 Route::get('/dashboard', function () {

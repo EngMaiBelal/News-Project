@@ -1692,7 +1692,7 @@ ____________________
     - In views\frontend\category\show.blade.php
         <div class="dropdown-menu">
             @foreach ( $categories as $category)
-                <a href="{{route('home.show.category', $category->slug)}}" class="dropdown-item">{{ $category->name }}</a>
+                <a href="{{route('home.category.show', $category->slug)}}" class="dropdown-item">{{ $category->name }}</a>
             @endforeach
         </div>
     - php artisan make:controller frontend/CategoryController --invokable
@@ -1750,7 +1750,7 @@ ____________________
         Route::resource('posts', PostController::class)->except(['show']);
         Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post.show');
     - IndexBlade 
-        <a href="{{ route('home.post.show', $post->slug) }}">
+        <a href="{{ route('home.posts.show', $post->slug) }}">
     - PostController
         $post_by_slug = Post::whereSlug($post->slug)->with('comments', 'imagePosts')->first();
         return view('frontend.post.show', compact('post_by_slug'));
@@ -1868,7 +1868,7 @@ ____________________
                         <img src="{{ $post->imagePosts->first()->path }}" alt={{ $post->title }}/>
                     </div>
                     <div class="tn-title">
-                        <a href="{{ route('home.post.show', $post->slug) }}"
+                        <a href="{{ route('home.posts.show', $post->slug) }}"
                             title="{{ $post->title }}">{{ $post->title }}</a>
                         <p class="" style="color: #63b59f">Date :(
                             {{ $post->created_at }} )</p>
@@ -1957,7 +1957,7 @@ _________________
                 $('#showMoreBtn').on('click', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: "{{ route('home.post.comments.show', $post_by_slug->slug) }}/",
+                        url: "{{ route('home.posts.comments.show', $post_by_slug->slug) }}/",
                         type: 'GET',
                         success: function(response) {
 
@@ -2031,7 +2031,7 @@ _________________
                 event.preventDefault();
                 var formData = $(this).serialize();
                 $.ajax({
-                    url: "{{route('home.post.comments.store')}}",
+                    url: "{{route('home.posts.comments.store')}}",
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -2112,3 +2112,32 @@ _________________
         <li class="breadcrumb-item active">{{ $category_by_slug->name }}</li>
     @endsection
     وهكذا في كل الصفحات
+_________________
+Route handling
+_________________ 
+Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::post('/news-subscriber', [NewsSubscriberController::class, 'store'])->name('news.subscriber');
+    Route::get('terms', [TermsController::class, 'index'])->name('terms');
+    Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
+    Route::get('about', [AboutController::class, 'index'])->name('about');
+
+    Route::get('show-category/{category:slug}', [CategoryController::class, '__invoke'])->name('category.show');
+    
+    Route::group(['prefix'=> '/posts', 'as'=> 'posts.'],function () {
+        Route::resource('/', PostController::class)->except(['show']);
+        Route::get('/{post:slug}', [PostController::class, 'show'])->name('show');
+        Route::group(['prefix'=> '/comments', 'as'=> 'comments.'],function(){
+            Route::get('/{post:slug}', [CommentController::class, 'show'])->name('show');
+            Route::post('/add-comment', [CommentController::class, 'store'])->name('store');
+        });
+    });
+    Route::group(['prefix'=> '/contact-us', 'as'=> 'contact.'],function(){
+        Route::get('/', [ContactController::class, 'index'])->name('index');
+        Route::post('/store', [ContactController::class, 'store'])->name('store');
+    });
+});
+
+_________________
+Web searching
+_________________ 

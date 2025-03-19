@@ -102,7 +102,7 @@
                                         <img src={{ $post->imagePosts->first()->path }} class="img-fluid"
                                             alt={{ $post->title }} />
                                         <div class="sn-title">
-                                            <a href={{ route('home.post.show', $post->slug) }}
+                                            <a href={{ route('home.posts.show', $post->slug) }}
                                                 title="{{ $post->title }}">{{ $post->title }}</a>
                                         </div>
                                     </div>
@@ -123,7 +123,7 @@
                                             <img src={{ $post->imagePosts->first()->path }} />
                                         </div>
                                         <div class="nl-title">
-                                            <a href={{ route('home.post.show', $post->slug) }}
+                                            <a href={{ route('home.posts.show', $post->slug) }}
                                                 title="{{ $post->title }}">{{ $post->title }}</a>
                                                 <p class="" style="color: #63b59f">Date :(
                                                     {{ $post->created_at }} )</p>
@@ -163,7 +163,7 @@
                                                     <img src={{ $post->imagePosts->first()->path }} />
                                                 </div>
                                                 <div class="tn-title">
-                                                    <a href="{{ route('home.post.show', $post->slug) }}"
+                                                    <a href="{{ route('home.posts.show', $post->slug) }}"
                                                         title="{{ $post->title }}">{{ $post->title }}</a>
                                                     <p class="" style="color:#63b59f">Comments Number: (
                                                         {{ $post->comments_count }} )</p>
@@ -178,7 +178,7 @@
                                                     <img src="{{ $post->imagePosts->first()->path }}" />
                                                 </div>
                                                 <div class="tn-title">
-                                                    <a href="{{ route('home.post.show', $post->slug) }}"
+                                                    <a href="{{ route('home.posts.show', $post->slug) }}"
                                                         title="{{ $post->title }}">{{ $post->title }}</a>
                                                     <p class="" style="color: #63b59f">Views Number: (
                                                         {{ $post->views_num }} )</p>
@@ -195,7 +195,7 @@
                                                         alt={{ $post->title }} />
                                                 </div>
                                                 <div class="tn-title">
-                                                    <a href="{{ route('home.post.show', $post->slug) }}"
+                                                    <a href="{{ route('home.posts.show', $post->slug) }}"
                                                         title="{{ $post->title }}">{{ $post->title }}</a>
                                                     <p class="" style="color: #63b59f">Date :(
                                                         {{ $post->created_at }} )</p>
@@ -220,7 +220,7 @@
                                 <ul>
                                     @forelse ($categories as $category)
                                         <li>
-                                            <a href="{{ route('home.show.category', $category->slug) }}"
+                                            <a href="{{ route('home.category.show', $category->slug) }}"
                                                 title={{ $category->name }}>{{ $category->name }}
                                                 <p class="" style="color: #63b59f">Posts Number: (
                                                     {{ $category->posts_count }} )</p>
@@ -246,7 +246,7 @@
                             <h2 class="sw-title">Tags Cloud</h2>
                             <div class="tags">
                                 @forelse ($categories as $category)
-                                    <a href={{ route('home.show.category', $category->slug) }}
+                                    <a href={{ route('home.category.show', $category->slug) }}
                                         title={{ $category->name }}>{{ $category->name }}</a>
                                 @empty
                                     <p class="alert-info">
@@ -271,7 +271,7 @@
             $('#showMoreBtn').on('click', function(event) {
                 event.preventDefault();
                 $.ajax({
-                    url: "{{ route('home.post.comments.show', $post_by_slug->slug) }}/",
+                    url: "{{ route('home.posts.comments.show', $post_by_slug->slug) }}/",
                     type: 'GET',
                     success: function(response) {
 
@@ -311,7 +311,7 @@
                 event.preventDefault();
                 var formData = $(this).serialize();
                 $.ajax({
-                    url: "{{route('home.post.comments.store')}}",
+                    url: "{{route('home.posts.comments.store')}}",
                     type: 'POST',
                     data: formData,
                     processData: false,

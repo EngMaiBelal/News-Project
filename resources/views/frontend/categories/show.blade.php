@@ -20,7 +20,7 @@
                                 <div class="mn-img">
                                     <img src="{{ $post->imagePosts->first()->path }}" />
                                     <div class="mn-title">
-                                        <a href="{{ route('home.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                         <ul>
                             @forelse ($categories as $category)
                                 <li>
-                                    <a href="{{ route('home.show.category', $category->slug) }}" title={{ $category->name }}>{{ $category->name }}</a>
+                                    <a href="{{ route('home.category.show', $category->slug) }}" title={{ $category->name }}>{{ $category->name }}</a>
                                 </li>
                             @empty
                                 <li class="alert-info">
