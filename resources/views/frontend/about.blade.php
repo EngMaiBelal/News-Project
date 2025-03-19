@@ -4,6 +4,10 @@
 @section('header')
     @include('layouts.frontend.header')
 @endsection
+@section('breadcrumb')
+    @parent
+    <li class="breadcrumb-item active">About</li>
+@endsection
 
 @section('content')
     <div class="tab-news">

@@ -92,6 +92,17 @@
             </div>
         </nav>
         @yield('header')
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container">
+                <ul class="breadcrumb">
+                    @section('breadcrumb')
+                        <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
+                    @show
+                </ul>
+                </div>
+            </div>
+        <!-- Breadcrumb End -->
         <main class="py-4">
             @yield('content')
         </main>

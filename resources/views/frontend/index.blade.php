@@ -2,6 +2,9 @@
 @section('header')
     @include('layouts.frontend.header')
 @endsection
+@section('breadcrumb')
+    @parent
+@endsection
 
 @section('content')
     @php

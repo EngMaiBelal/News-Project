@@ -2,19 +2,12 @@
 @section('header')
     @include('layouts.frontend.header')
 @endsection
+@section('breadcrumb')
+    @parent
+    <li class="breadcrumb-item active">{{ $category_by_slug->name }}</li>
+@endsection
 
 @section('content')
-    <!-- Breadcrumb Start -->
-    <div class="breadcrumb-wrap">
-        <div class="container">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Categories</a></li>
-                <li class="breadcrumb-item active">{{ $category_by_slug->name }}</li>
-            </ul>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
     <!-- Main News Start-->
     <div class="main-news">
         <div class="container">

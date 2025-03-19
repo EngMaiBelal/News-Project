@@ -2085,3 +2085,30 @@ _________________
         }
         flash()->success('Operation completed successfully!');
         return redirect()->back();
+_________________
+BreadCrumb
+_________________ 
+- User experience, تتابع الصفحات ,SEO
+- In app.blade.php
+    <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container">
+                <ul class="breadcrumb">
+                    @section('breadcrumb')
+                        <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
+                    @show
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+- In index.blade.php
+    @section('breadcrumb')
+        @parent
+    @endsection
+- In category.blade.php
+    @section('breadcrumb')
+        @parent
+        <li class="breadcrumb-item active">{{ $category_by_slug->name }}</li>
+    @endsection
+    وهكذا في كل الصفحات
