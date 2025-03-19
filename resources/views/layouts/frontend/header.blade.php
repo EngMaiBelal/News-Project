@@ -13,7 +13,7 @@
                     <a href="{{ route('home.about') }}">About</a>
                     <a href="{{ route('home.privacy') }}">Privacy</a>
                     <a href="{{ route('home.terms') }}">Terms</a>
-                    <a href="{{ route('home.contact') }}">Contact</a>
+                    <a href="{{ route('home.contact.index') }}">Contact</a>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
                     </div>
                     <a href="{{ route('home.about')}}" class="nav-item nav-link">Single Page</a>
                     <a href="{{ route('dashboard') }}" class="nav-item nav-link">Dashboard</a>
-                    <a href="{{ route('home.contact') }}" class="nav-item nav-link">Contact Us</a>
+                    <a href="{{ route('home.contact.index') }}" class="nav-item nav-link">Contact Us</a>
                 </div>
                 <div class="social ml-auto">
                     <a href="{{ $settings->twitter }}" title="twitter"><i class="fab fa-twitter"></i></a>

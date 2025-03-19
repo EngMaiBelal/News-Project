@@ -49,9 +49,9 @@ ____________________
             timestamps();
         4- Contacts Migration:
             id();
-            string('phone')->unique();
+            string('phone');
             string('name');
-            string('email')->unique();
+            string('email');
             string('title');
             text('body');
             string('ip_address');
@@ -1912,7 +1912,6 @@ _________________
                 @push('js')
                     // add to another code
                 @endpush
-
     - Route
         Route::get('/posts/comments/{post:slug}', [CommentController::class, 'show'])->name('post.comments.show');
     
@@ -1956,9 +1955,7 @@ _________________
         <script>
             $(document).ready(function() {
                 $('#showMoreBtn').on('click', function(event) {
-
                     event.preventDefault();
-                    var postId = $('#postContent').attr('data');
                     $.ajax({
                         url: "{{ route('home.post.comments.show', $post_by_slug->slug) }}/",
                         type: 'GET',
@@ -1967,11 +1964,10 @@ _________________
                             // Access the response data
                             var commentsCount = response.post_comments_count;
                             var newComments = response.post_comments;
-
                             // مسح جميع التعليقات القديمة
                             $('.comments').empty();
                             $('.comments-count').text('Comments Number: (' + commentsCount + ')');
-                            $('.comments-count').attr('value') = commentsCount;
+                            $('.comments-count').attr('value', commentsCount);
 
                             // Loop through the new comments and append them to the comments section
                             newComments.forEach(function(comment) {
@@ -1985,6 +1981,7 @@ _________________
                                     </div>
                                 `;
                                 $('.comments').prepend(newCommentHtml);
+                                $('#showMoreBtn').hide();
                             });
                         },
                         error: function(xhr, status, error) {
@@ -1992,14 +1989,13 @@ _________________
                             alert("Failed to load new comments. Please try again later.");
 
                         },
-
                     });
-                });
+            });
             })
         </script>
     
     - CommentController
-    ملحوظه هنا انت مش محتاج تجيب البوست تاني هوه جاي اصلا في ال binding
+        ملحوظه هنا انت مش محتاج تجيب البوست تاني هوه جاي اصلا في ال binding
         public function show(Post $post)
             $post_with_comments = $post->load(['comments' => function($query){
                 $query->with(['user' => function($query){
@@ -2014,6 +2010,9 @@ _________________
                 'post_comments' => $post_comments,
                 'post_comments_count' => $post_comments_count,
             ]);
+_________________
+Add Comment
+_________________  
     - Add comment by ajax
         - Route::post('/posts/comments/add-comment', [CommentController::class, 'store'])->name('post.comments.store');
         - <form id="addComment">
@@ -2026,9 +2025,10 @@ _________________
                 <button type="submit">Add Comment</button>
             </div>
           </form>
-        -   $('#addComment').on('submit', function(event){
+
+        - $(document).ready(function() {
+            $('#addComment').on('submit', function(event){
                 event.preventDefault();
-                // var formData = new FormData($(this)[0]); // return all data from form and serialize it
                 var formData = $(this).serialize();
                 $.ajax({
                     url: "{{route('home.post.comments.store')}}",
@@ -2049,9 +2049,11 @@ _________________
                                     </div>
                                 </div>
                             `);
-                          
-                        var commentValue = $('.comments-count').attr('value');
-                        $('.comments-count').text('Comments Number: (' + (parseInt(commentValue)++) + ')');
+                        var commentCountText = $('.comments-count').text();
+                        var currentCommentCount = parseInt(commentCountText.replace(/[^\d]/g, '')); // Extract the number from the text
+
+                        // Increment the count and update the text
+                        $('.comments-count').text('Comments Number: (' + (currentCommentCount + 1) + ')');
                     
                     },
                     error: function(xhr, status, error) {
@@ -2061,12 +2063,25 @@ _________________
 
                 });
             })
-        -  CommentsRequest
-            - authorize()
-                return true;
-            - rules(): array
-                return [
-                    'value' => ['required', 'string', 'max:255'],
-                    'post_id' => ['required', 'exists:posts,id'],
-                    'user_id' => ['required', 'exists:users,id'],
-                ];
+        })
+_________________
+Contact Us
+_________________ 
+- web.php
+    Route::get('contact-us', [ContactController::class, 'index'])->name('contact.index');
+    Route::post('contact-us/store', [ContactController::class, 'store'])->name('contact.store');
+
+- ContactController extends Controller
+    - index()
+        return view('frontend.contact');
+    - store(ContactStoreRequest $request)
+        $request->validated();
+        $request->merge([
+            'ip_address' => $request->ip()
+        ]);
+        $contact = Contact::create($request->except('_token'));
+        if(!$contact){
+            flash()->error('Faild Operation!');
+        }
+        flash()->success('Operation completed successfully!');
+        return redirect()->back();

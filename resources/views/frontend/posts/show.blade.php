@@ -286,11 +286,10 @@
                         // Access the response data
                         var commentsCount = response.post_comments_count;
                         var newComments = response.post_comments;
-
                         // مسح جميع التعليقات القديمة
                         $('.comments').empty();
                         $('.comments-count').text('Comments Number: (' + commentsCount + ')');
-                        $('.comments-count').attr('value') = commentsCount;
+                        $('.comments-count').attr('value', commentsCount);
 
                         // Loop through the new comments and append them to the comments section
                         newComments.forEach(function(comment) {
@@ -338,8 +337,11 @@
                                     </div>
                                 </div>
                             `);
-                        var commentValue = $('.comments-count').attr('value');
-                        $('.comments-count').text('Comments Number: (' + (parseInt(commentValue)+=1) + ')');
+                        var commentCountText = $('.comments-count').text();
+                        var currentCommentCount = parseInt(commentCountText.replace(/[^\d]/g, '')); // Extract the number from the text
+
+                        // Increment the count and update the text
+                        $('.comments-count').text('Comments Number: (' + (currentCommentCount + 1) + ')');
                     
                     },
                     error: function(xhr, status, error) {

@@ -23,7 +23,7 @@ class CheckSettingProvider extends ServiceProvider
         $settings = Setting::firstOr(function(){
             return Setting::create([
                 'site_name' => 'News',
-                'email' => 'mai.belal2127@gmail.com',
+                'email' => 'mai@gmail.com',
                 'phone' => '01019063522',
                 'favicon' => 'logo.jpg',
                 'logo' => 'logo.jpg',

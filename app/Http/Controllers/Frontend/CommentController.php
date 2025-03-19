@@ -6,11 +6,11 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\frontend\CommentsRequest;
+use App\Http\Requests\frontend\CommentsStoreRequest;
 
 class CommentController extends Controller
 {
-    public function store(CommentsRequest $request)
+    public function store(CommentsStoreRequest $request)
     {
         // Validating the request
         $comment_validated = $request->validated();
