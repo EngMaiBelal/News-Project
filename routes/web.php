@@ -7,6 +7,7 @@ use App\Http\Controllers\frontend\PostController;
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\TermsController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\frontend\SearchController;
 use App\Http\Controllers\Frontend\CommentController;
 use App\Http\Controllers\Frontend\PrivacyController;
 use App\Http\Controllers\Frontend\CategoryController;
@@ -34,6 +35,7 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
         Route::get('/', [ContactController::class, 'index'])->name('index');
         Route::post('/store', [ContactController::class, 'store'])->name('store');
     });
+    Route::match(['get', 'post'] ,'/search', SearchController::class)->name('search');
 });
 
 Route::get('/dashboard', function () {

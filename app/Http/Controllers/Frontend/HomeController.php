@@ -10,16 +10,15 @@ use App\Http\Controllers\Controller;
 class HomeController extends Controller
 {
     public function index(){
-        $posts = Post::with('imagePosts')->latest()->paginate(9);
-        $oldest_news = Post::oldest()->with('imagePosts')->take(3)->get();
-        $most_views = Post::orderBy('views_num', 'desc')
+        $posts = Post::active()->with('imagePosts')->latest()->paginate(9);
+        $oldest_news = Post::active()->oldest()->with('imagePosts')->take(3)->get();
+        $most_views = Post::active()->orderBy('views_num', 'desc')
             ->with('imagePosts')
             ->limit(3)
             ->get();
-        $categories = Category::with(['posts' => function ($query) {
+        $categories = Category::active()->with(['posts' => function ($query) {
             $query->limit(4);
         }])->get();
-
         return view('frontend.index', compact('posts', 'most_views', 'oldest_news', 'categories'));
     }
 }

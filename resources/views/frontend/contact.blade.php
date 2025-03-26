@@ -71,10 +71,10 @@
                       placeholder="Message"
                       style="resize: none"
                     ></textarea>
+                    @error('body')
+                      <div class="text-danger"> {{ $message }} </div>
+                    @enderror
                   </div>
-                  @error('body')
-                    <div class="text-danger"> {{ $message }} </div>
-                  @enderror
                 </div>
                 <div>
                   <button class="btn" type="submit">Send Message</button>

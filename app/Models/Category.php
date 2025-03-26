@@ -28,4 +28,14 @@ class Category extends Model
     public function posts(){
         return $this->hasMany(Post::class, 'category_id');
     } 
+        
+    /**
+     * scopeActive
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeActive($query){
+        $query->where('status', 1);
+    }
 }

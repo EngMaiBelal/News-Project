@@ -24,7 +24,7 @@ class CacheServiceProvider extends ServiceProvider
         // get data from Database
         if(! Cache::has('read_more_posts')){
             Cache::remember('read_more_posts', 3600 , function(){ # key, time in second, callback
-                return Post::latest()->take(10)->get();
+                return Post::active()->latest()->take(10)->get();
             });
         }
 

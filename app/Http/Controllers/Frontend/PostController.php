@@ -44,13 +44,12 @@ class PostController extends Controller
                         'imagePosts',
                         'user'])
                         ->withCount('comments')
-                        ->first();
+                        ->find($post->id); // بدل first
 
-        $posts_of_category = Post::where('category_id' , $post_by_slug->category->id)
+        $posts_of_category = Post::active()->where('category_id' , $post_by_slug->category->id)
                     ->select('id', 'slug', 'title', 'created_at')
                     ->limit(5)
                     ->get();
-
         return view('frontend.posts.show', compact('post_by_slug','posts_of_category'));
     }
 

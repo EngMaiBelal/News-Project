@@ -1763,7 +1763,14 @@ ____________________
 
     2- Controller
         - show(Post $post)
-            $post_by_slug = Post::whereSlug($post->slug)->with('comments', 'imagePosts', 'user')->first();
+            $post_by_slug = $post->with([
+                        'comments' => function($query) {
+                            $query->latest()->limit(3);  // حدّ من عدد التعليقات إلى 3 فقط
+                        }, 
+                        'imagePosts',
+                        'user'])
+                        ->withCount('comments')
+                        ->find($post->id);            
             $posts_of_category = Post::where('category_id' , $post_by_slug->category->id)->select('id', 'slug', 'title')->limit(5)->get();
             return view('frontend.post.show', compact('post_by_slug','posts_of_category'));
 
@@ -2141,3 +2148,93 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
 _________________
 Web searching
 _________________ 
+- views\frontend\search.blade.php
+    @extends('layouts.frontend.app')
+    @section('header')
+        @include('layouts.frontend.header')
+    @endsection
+    @section('breadcrumb')
+        @parent
+    @endsection
+    @section('content')
+        <!-- Main News Start-->
+        <div class="main-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            {{-- // all posts --}}
+                            @foreach ($posts as $post)
+                                <div class="col-md-4">
+                                    <div class="mn-img">
+                                        <img src="{{ $post->imagePosts->first()->path }}" />
+                                        {{-- <img src="{{ Storage::url('images/' . $post->imagePosts->first()->name)}}" /> --}}
+                                        <div class="mn-title">
+                                            <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            <div class="col-md-12">
+                                {{ $posts->links() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main News End-->
+    @endsection
+
+    @section('footer')
+        @include('layouts.frontend.footer')
+    @endsection
+
+- SearchController.php
+    - __invoke(Request $request)
+         $posts = Post::where('title', 'LIKE', '%'.$request->search.'%')
+                    ->orWhere('description', 'LIKE', '%'.$request->search.'%')
+                    ->with('imagePosts')
+                    ->latest()
+                    ->paginate(9);
+        return view('frontend.search', compact('posts'));
+- Route
+    Route::match(['get', 'post'] ,'/search', SearchController::class)->name('search');
+- header.blade.php
+    <div class="col-lg-3 col-md-4">
+        <form action={{ route('home.search') }} method="POST">
+            @csrf
+            <div class="b-search">
+                <input name="search" type="text" placeholder="Search" />
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+- لو انا بعت اسكربت او كود ضار رايح ع الداتا بيز لازم اهندل حنه السكيوريتي
+    -In search input ---> <script>llll</script>
+    $request->validate([
+            'search'=> ['nullable', 'string', 'max:100']
+    ]);
+    $data_search = strip_tags($request->search);
+
+
+_________________
+Scope قيود معينه بطبقها علي الكويري
+_________________ 
+    - Local -> optional متاح تستخدمه أو لا ... استدعيه وقت ما تحتاجه 
+    - Global -> هيطبق علي الكل حتي لو مستدعتوش
+    - EX 
+        - Show posts only active.
+    - write scope in model
+        public function scopeActive($query){
+            $query->where('status', 1);
+        }
+    - call it in controller
+        Controllers\Frontend\PostController.php
+        Controllers\Frontend\HomeController.php
+        Controllers\Frontend\SearchController.php
+        CacheServiceProvider.php
+        SharedDataServiceProvider.php
+        
+            Post::active()->....
+            $post->active()->....

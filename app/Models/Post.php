@@ -38,17 +38,46 @@ class Post extends Model
             ]
         ];
     }
-
+    
+    /**
+     * category
+     *
+     * @return void
+     */
     public function category(){
         return $this->belongsTo(Category::class, 'category_id');
-    }
+    }    
+    /**
+     * user
+     *
+     * @return void
+     */
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
-    }
+    }    
+    /**
+     * comments
+     *
+     * @return void
+     */
     public function comments(){
         return $this->hasMany(Comment::class, 'post_id');
-    }
+    }    
+    /**
+     * imagePosts
+     *
+     * @return void
+     */
     public function imagePosts(){
         return $this->hasMany(ImagePost::class, 'post_id');
+    }    
+    /**
+     * scopeActive
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeActive($query){
+        $query->where('status', 1);
     }
 }

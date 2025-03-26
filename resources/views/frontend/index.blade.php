@@ -189,7 +189,9 @@
                                 </div>
                             </div>
                         @endforeach
-                        {{ $posts->links() }}
+                        <div class="col-md-12">
+                            {{ $posts->links() }}
+                        </div>
                     </div>
                 </div>
 
@@ -201,7 +203,7 @@
                             @if($read_more_posts && $read_more_posts->isNotEmpty())
                             @foreach($read_more_posts as $post)
                                 <li>
-                                    <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
+                                    <a href={{ route('home.posts.show', $post->slug) }} title={{ $post->title }}>{{ $post->title }}</a>
                                     <p class="pt-2" style="color: #63b59f">{{ $post->created_at }}</p>
                                 </li>
                             @endforeach

@@ -24,14 +24,14 @@ class SharedDataServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if(!Cache::has('latest_posts')){
-            $latest_posts = Post::select('slug', 'title', 'created_at', 'id')->latest()->limit(3)->get();
+            $latest_posts = Post::active()->select('slug', 'title', 'created_at', 'id')->latest()->limit(3)->get();
             Cache::remember('latest_posts', 3600, function() use($latest_posts){
                 return $latest_posts;
             });
         }
 
         if(!Cache::has('popular_posts')){
-            $popular_posts = Post::withCount('comments')->with('comments')->limit(3)->orderBy('comments_count', 'desc')->get();
+            $popular_posts = Post::active()->withCount('comments')->with('comments')->limit(3)->orderBy('comments_count', 'desc')->get();
             Cache::remember('popular_posts', 3600, function() use($popular_posts){
                 return $popular_posts;
             });
@@ -40,8 +40,8 @@ class SharedDataServiceProvider extends ServiceProvider
         $popular_posts =  Cache::get('popular_posts');
 
         $related_sites = RelatedSite::select('name','url')->get();
-        $categories = Category::withCount('posts')->get();
-        $most_views = Post::orderBy('views_num', 'desc')->with('imagePosts')->limit(3)->get();
+        $categories = Category::active()->withCount('posts')->get();
+        $most_views = Post::active()->orderBy('views_num', 'desc')->with('imagePosts')->limit(3)->get();
 
         view()->share([
             'related_sites' => $related_sites,
