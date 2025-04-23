@@ -1353,7 +1353,7 @@ button.btn:hover {
   outline: none;
 }
 
-.comment-input button {
+.comment-input button, #user_login button, #user_register button {
   padding: 12px 20px;
   background-color: #63b59f;
   color: white;
@@ -1364,7 +1364,7 @@ button.btn:hover {
   transition: background-color 0.3s ease;
 }
 
-.comment-input button:hover {
+.comment-input button:hover, #user_login button:hover, #user_register button:hover {
   background-color: #000000;
 }
 

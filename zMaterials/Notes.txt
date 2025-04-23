@@ -2238,3 +2238,29 @@ _________________
         
             Post::active()->....
             $post->active()->....
+_____________________________________
+Multiguard Authentication
+_____________________________________
+- config\auth.php
+    - by default laravel 
+        'guards' => [
+            'web' => [
+                'driver' => 'session', // store in session
+                'provider' => 'users', // model users
+            ],
+        ],
+    - Auth facade by default web --> مش بحتاج احدد الجارد
+        $user = auth()->user(); 
+        $admin = auth()->guard('admin')->user();
+    - why install node?
+        @vite(['resources/css/app.css', 'resources/js/app.js']) 
+        هتشغل الملفات دي وكمان بتعمل updateبدون رفريش 
+    - install node js
+        -   downlood node.js
+        -   npm install
+        -   npm run dev
+    - download package breeze
+    - handle layout
+_____________________________________
+MultiMedia Deals
+_____________________________________
