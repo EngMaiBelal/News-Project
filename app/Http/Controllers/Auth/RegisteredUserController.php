@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -35,13 +36,27 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'phone' => ['required','regex:/(01)[0-9]{9}/', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'country' => ['nullable', 'string', 'max:50'],
+            'city' => ['nullable', 'string', 'max:50'],
+            'street' => ['nullable', 'string', 'max:50'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // kilobyte
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imageName = Str::slug($request->user_name).time().".".$request->file('image')->getClientOriginalExtension();
+            $imagePath = $request->file('image')->storeAs('uploads/images/users', $imageName, ['disk'=> 'uploads']);
+        }
 
         $user = User::create([
             'name' => $request->name,
             'user_name' => $request->user_name,
-            'phone' => $request->phone,
             'email' => $request->email,
+            'phone' => $request->phone,
+            'country' => $request->country,
+            'city' => $request->city,
+            'street' => $request->street,
+            'image' => $imagePath,
             'password' => Hash::make($request->password),
         ]);
 

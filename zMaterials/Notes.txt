@@ -2261,6 +2261,77 @@ _____________________________________
         -   npm run dev
     - download package breeze
     - handle layout
+        - Auth\RegisteredUserController.php
+        - $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'user_name' =>['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone' => ['required','regex:/(01)[0-9]{9}/', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'country' => ['nullable', 'string', 'max:50'],
+            'city' => ['nullable', 'string', 'max:50'],
+            'street' => ['nullable', 'string', 'max:50'],
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // kilobyte
+        ]);
+        
+        $user = User::create([
+            'name' => $request->name,
+            'user_name' => $request->user_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'country' => $request->country,
+            'city' => $request->city,
+            'street' => $request->street,
+            'image' => $imagePath,
+            'password' => Hash::make($request->password),
+        ]);
 _____________________________________
 MultiMedia Deals
 _____________________________________
+    - <form enctype="multipart/form-data">
+    - Auth\RegisteredUserController.php
+        
+
+
+- First way
+    $imagePath = $request->file('image')->store('images', 'public'); 
+        - Create fake name automatic in desk public. 
+        - Add it in storage\app\public\images\iPS7NRFlKpooCLVWHxRY1RZmRHW4cMQlk1nwpqnO.jpg
+        - هضطر انك تعمل منها الصور دي shortcut بره عشان تعرف تعرضها
+    
+    Example:
+        - Let’s say the user uploads profile.jpg. After this line runs, Laravel might:
+        - Rename it to something unique (like Hf8U12j.jpg)
+        - Store it at: storage/app/public/images/Hf8U12j.jpg
+        - Return: 'images/Hf8U12j.jpg'
+        - And we can use it:
+            <img src="{{ asset('storage/' . $imagePath) }}">
+- Second way
+        - 
+            $imagePath = null;
+            if ($request->hasFile('image'))
+                $imageName = Str::slug($request->user_name).time().".".$request->image->getOriginalExtension();
+                $imagePath = $request->file('image')->storeAs('images/users', $imageName, 'public');
+
+        - create a new desk in config\filesystems.php
+            add in desks 
+            'uploads' => [
+                'driver' => 'local',
+                'root' => puplic_path('/'),   # add in public directely
+                'url' => env('APP_URL').'/',  # from controller
+                'visibility' => 'public',
+                'throw' => false,
+            ]
+        - if ($request->hasFile('image'))
+                $imageName = Str::slug($request->user_name).time().".".$request->image->getOriginalExtension();
+                $imagePath = $request->file('image')->storeAs('uploads/images/users', $imageName, ['disk'=> 'uploads']);
+                    --> Add it in News-WEB\public Not in News-WEB\storage\app\public\images
+                $user->create([
+                        'image' => $imageName   
+                            --> high performance 
+                            --> <img src="{{asset('uploads/images/users'.auth()->user()->image)}}"> الاسيت بتعرفني انك داخل البابلك حط بقي المسار
+                - OR 
+                        'image' => $imagePath
+                            --> <img src="{{asset(auth()->user()->image)}}">
+                ]);
+           
