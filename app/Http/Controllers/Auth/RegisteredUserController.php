@@ -36,10 +36,10 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'phone' => ['required','regex:/(01)[0-9]{9}/', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'country' => ['nullable', 'string', 'max:50'],
-            'city' => ['nullable', 'string', 'max:50'],
-            'street' => ['nullable', 'string', 'max:50'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // kilobyte
+            'country' => ['required', 'string', 'max:50'],
+            'city' => ['required', 'string', 'max:50'],
+            'street' => ['required', 'string', 'max:50'],
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // kilobyte
         ]);
 
         $imagePath = null;
@@ -63,7 +63,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        flash()->success("Register Successfully");
+        return redirect(route('home.index', absolute: false));
+        // return redirect(route('dashboard', absolute: false));
     }
 }

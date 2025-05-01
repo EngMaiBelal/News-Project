@@ -2259,7 +2259,7 @@ _____________________________________
         -   downlood node.js
         -   npm install
         -   npm run dev
-    - download package breeze
+    - download package laravel ui
     - handle layout
         - Auth\RegisteredUserController.php
         - $request->validate([
@@ -2334,4 +2334,57 @@ _____________________________________
                         'image' => $imagePath
                             --> <img src="{{asset(auth()->user()->image)}}">
                 ]);
-           
+        - return redirect(route('home.index', absolute: false));
+
+           الطبيعي اني لو موثوق وحبيت ادخل علي ال register, login 
+           هيوديني علي صفحة الداش بورد 
+           عاوزه اعدل في ده 
+           - News-WEB\vendor\laravel\framework\src\Illuminate\Auth\Middleware\RedirectIfAuthenticated.php
+           - News-WEB\app\Providers\AppServiceProvider.php
+                public function boot(): void
+                    RedirectIfAuthenticated::redirectUsing(function ($request) {
+                        return route('home.index'); // حط هنا المسار اللي عايزه
+                    });
+            - handle toogle
+              <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                        {{ __('Profile') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                    if(confirm('Are You Sure')){ document.getElementById('logout-form').submit();}">
+                                        {{ __('Logout') }}
+                                    </a>
+                    
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+_____________________________________
+Auth Stage
+_____________________________________
+- To convert the email expired time --> config\auth.php

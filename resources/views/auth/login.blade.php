@@ -1,11 +1,14 @@
 
 @extends('layouts.frontend.app')
+@section('header')
+    @include('layouts.frontend.header')
+@endsection
 @section('breadcrumb')
 @parent
 <li class="breadcrumb-item active">{{ __('Login') }}</li>
 @endsection
 @section('content')
-<div class="container mt-5">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             {{-- Session Status --}}
@@ -74,4 +77,7 @@
         </div>
     </div>
 </div>
+@endsection
+@section('footer')
+    @include('layouts.frontend.footer')
 @endsection

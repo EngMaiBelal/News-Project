@@ -16,6 +16,13 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+                 <!-- Navigation Links -->
+                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('home.index')" :active="request()->routeIs('home.index')">
+                        {{ __('Home') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -45,7 +52,7 @@
 
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                                    if(confirm('Are You Sure')){ this.closest('form').submit();}">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>

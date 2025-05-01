@@ -1,58 +1,73 @@
-<!-- Top Bar Start -->
-<div class="top-bar">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="tb-contact">
-                    <p><i class="fas fa-envelope"></i>{{ $settings->email }}</p>
-                    <p><i class="fas fa-phone-alt"></i>{{ $settings->phone }}</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tb-menu">
-                    <a href="{{ route('home.about') }}">About</a>
-                    <a href="{{ route('home.privacy') }}">Privacy</a>
-                    <a href="{{ route('home.terms') }}">Terms</a>
-                    <a href="{{ route('home.contact.index') }}">Contact</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Top Bar Start -->
 
-<!-- Brand Start -->
-<div class="brand">
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-3 col-md-4">
-                <div>
-                    <a href="index.html" >
-                        <img src={{ Storage::url('images/' . $settings->logo) }} alt="Logo" style="width: 5rem; border-radius:2.5rem !important"/>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-4">
-                <div class="b-ads">
-                    <a href="" class="m-auto">
-                        <img src={{ Storage::url('images/download.jpg') }}
-                            alt="Image" width="320px" height="100px"/>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4">
-                <form action={{ route('home.search') }} method="POST">
-                    @csrf
-                    <div class="b-search">
-                        <input name="search" type="text" placeholder="Search" />
-                        <button type="submit"><i class="fa fa-search"></i></button>
+        <a href="index.html" class="mr-2">
+            <img src={{ Storage::url('images/' . $settings->logo) }} alt="Logo" style="width: 5rem; border-radius:2.5rem !important"/>
+        </a>
+        <a class="navbar-brand" href="{{ route('home.index') }}">
+            {{ config('app.name', 'Laravel') }}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left Side Of Navbar -->
+            <ul class="navbar-nav m-auto">
+                <div class="col-lg-6 col-md-4">
+                    <div class="b-ads">
+                        <a href="" class="m-auto">
+                            <img src={{ Storage::url('images/download.jpg') }}
+                                alt="Image" width="320px" height="100px"/>
+                        </a>
                     </div>
-                </form>
-            </div>
+                </div>
+            </ul>
+
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Authentication Links -->
+                @guest
+                    @if (Route::has('login'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                    @endif
+
+                    @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                    @endif
+                @else
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }}
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                {{ __('Profile') }}
+                            </a>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                            if(confirm('Are You Sure')){ document.getElementById('logout-form').submit();}">
+                                {{ __('Logout') }}
+                            </a>
+            
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @endguest
+            </ul>
         </div>
     </div>
-</div>
-<!-- Brand End -->
+</nav>
 
 <!-- Nav Bar Start -->
 <div class="nav-bar">
@@ -82,8 +97,6 @@
                     <a href="{{ $settings->twitter }}" title="twitter"><i class="fab fa-twitter"></i></a>
                     <a href="{{ $settings->facebook }}" title="facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="{{ $settings->youtube }}" title="youtube"><i class="fab fa-youtube"></i></a>
-                    {{-- <a href="{{ $settings->phone }}"><i class="fab fa-linkedin-in"></i></a> --}}
-                    {{-- <a href="{{ $settings->phone }}"><i class="fab fa-instagram"></i></a> --}}
                 </div>
             </div>
         </nav>

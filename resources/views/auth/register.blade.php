@@ -1,21 +1,21 @@
 @extends('layouts.frontend.app')
-
+@section('header')
+    @include('layouts.frontend.header')
+@endsection
 @section('breadcrumb')
 @parent
 <li class="breadcrumb-item active">{{ __('Register') }}</li>
 @endsection
 
 @section('content')
-<div class="container mt-5">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}" id="user_register" enctype="multipart/form-data">
                         @csrf
-
                         {{-- Name --}}
                         <div class="mb-3">
                             <label for="name" class="form-label">{{ __('Name') }}</label>
@@ -64,7 +64,7 @@
                             <label for="country" class="form-label">{{ __('Country') }}</label>
                             <input id="country" type="text"
                                 class="form-control @error('country') is-invalid @enderror"
-                                name="country" value="{{ old('country') }}" autocomplete="country">
+                                name="country" value="{{ old('country') }}" required autocomplete="country">
                             @error('country')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -74,7 +74,7 @@
                             <label for="city" class="form-label">{{ __('City') }}</label>
                             <input id="city" type="text"
                                 class="form-control @error('city') is-invalid @enderror"
-                                name="city" value="{{ old('city') }}" autocomplete="city">
+                                name="city" value="{{ old('city') }}" required autocomplete="city">
                             @error('city')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -84,7 +84,7 @@
                             <label for="street" class="form-label">{{ __('Street') }}</label>
                             <input id="street" type="text"
                                 class="form-control @error('street') is-invalid @enderror"
-                                name="street" value="{{ old('street') }}" autocomplete="street">
+                                name="street" value="{{ old('street') }}" required autocomplete="street">
                             @error('street')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -94,7 +94,7 @@
                             <label for="image" class="form-label">{{ __('Image') }}</label>
                             <input id="image" type="file"
                                 class="form-control @error('image') is-invalid @enderror"
-                                name="image" value="{{ old('image') }}" autocomplete="image">
+                                name="image" value="{{ old('image') }}" required autocomplete="image">
                             @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -136,4 +136,7 @@
         </div>
     </div>
 </div>
+@endsection
+@section('footer')
+    @include('layouts.frontend.footer')
 @endsection
