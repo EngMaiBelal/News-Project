@@ -2385,6 +2385,93 @@ _____________________________________
                         @endguest
                     </ul>
 _____________________________________
-Auth Stage
+Remember Token
 _____________________________________
 - To convert the email expired time --> config\auth.php
+
+- Remember me Concept
+    - regenerate token in Cookies in your browser As (Persistent Cookies).
+    - regenerate token in Database in user table (unique).
+
+- Laravel cookies --> store small pieces of data on the client's machine. 
+    Types of cookies
+
+    1. Encrypted Cookies (Default)
+        - Laravel automatically encrypts all cookies to prevent tampering.
+        - The most common cookies used in Laravel.
+        - Secure by default.
+
+    2. Unencrypted Cookies
+        - Cookies that are not encrypted.
+        - Laravel doesn't set unencrypted cookies by default, but you can manually create them if needed.
+        - Avoid storing sensitive data.
+        - How to skip encryption: Add the cookie name to the $except array in App\Http\Middleware\EncryptCookies.
+
+    3. Session Cookies
+        - Cookies that expire when the browser is closed.
+        - Laravel’s session management stores the session ID in a cookie named laravel_session.
+        - Configurable in: config/session.php.
+
+    4. Persistent Cookies
+        - Cookies that have a specific expiration time and persist across sessions.
+        - Use Laravel’s Cookie::queue() or response helper to set them with an expiration time.
+        - return response('Hello')->cookie('name', 'value', 60); // 60 minutes
+    5. Queued Cookies
+        - Cookies that are "queued" and sent with the response later.
+        - Useful when you cannot directly access the response object.
+            (مثل داخل Middleware أو Service)
+            مفيد عندما لا تكون داخل Controller أو لا تستطيع الوصول إلى response() مباشرة.
+            Laravel يضيف الكوكيز المؤجلة تلقائيًا إلى الاستجابة عند تنفيذها.
+        - EX
+            use Illuminate\Support\Facades\Cookie;
+                    Cookie::queue(Cookie::make('key', 'value', 10));
+    6. Third-party Cookies
+        - Cookies set by external services like Google Analytics or Stripe.
+        - Not directly controlled by Laravel but can be included via scripts or headers.
+            Google Analyticsو Facebook Pixelو Stripe (بوابات الدفع) أدوات الإعلانات
+        - Note: Subject to privacy regulations like GDPR.
+        - غالبًا ما تُضاف من خلال JavaScript مضمّن في الصفحة. ملفات iframe أو وسوم script من مواقع أخرى.   
+        - EX
+            <script src="https://www.google-analytics.com/analytics.js"></script>
+            عند تحميل هذا السكربت، يقوم Google Analytics بوضع كوكيز مثل _ga أو _gid.
+_____________________________________
+- Different between Session cookie and session 
+_____________________________________
+
+    - Session
+        هي طريقة لتخزين بيانات المستخدم مؤقتًا على السيرفر.
+
+            - EX 
+                - session(['username' => 'Ahmed']); --> add
+                    - OR
+                - Session::put('username', 'Ahmed');
+
+                - $username = session('username'); -->reed
+                - Session::forget('username'); --> delete
+           
+           - Where i store session?
+                - file (الافتراضي): يتم تخزينها في storage/framework/sessions
+                - database, redis, or memcached
+                - by edit in config/session.php
+                    'driver' => 'file',
+    - Session Cookie في Laravel
+        - عند استخدام لارفيل السيشن كوكي بيرسل للبراوزر --> laravel_session
+        - يحتوي فقط علي --> Session ID
+            - للربط بين المستخدم والسيشن المخزنة على سيرفر.
+            - يُنشأ تلقائيًا: لا تحتاج لإنشائه بنفسك 
+        - (يُحذف عند إغلاق المتصفح، ما لم يتم تغيير الإعداد)
+        - EX 
+            مثال عند تسجيل دخول مستخدم
+                Session::put('user_id', $user->id);
+                
+                1- هيكريت لارفل السيشن ايدي ويخزنه في السيرفر
+                2- يرسل للمستخدم كوكي باسم لارفل سيشن وفيه الايدي 
+                3- في كل طلب لاحق، يرسل المتصفح هذا الكوكي، فيتعرف لارفل على الجلسة ويسترجع البيانات.
+_____________________________________
+Verify Email
+_____________________________________
+    - Class User    --> implements MustVerifyEmail.
+    - Add to routes --> middleware(['auth', 'verified']).
+    - Route::redirect('/', '/home');
+    لو انا كتبت اليورل 
+    127.0.0.1:8000 هيوديني علي صفحة الهوم

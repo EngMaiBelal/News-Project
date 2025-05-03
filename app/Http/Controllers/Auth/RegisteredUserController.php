@@ -63,7 +63,9 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
         flash()->success("Register Successfully");
+        
         return redirect(route('home.index', absolute: false));
         // return redirect(route('dashboard', absolute: false));
     }
