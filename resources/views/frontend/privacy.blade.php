@@ -1,4 +1,6 @@
-
+@section('title') 
+{{__('Privacy')}}
+@endsection
 @extends('layouts.frontend.app')
 @section('header')
     @include('layouts.frontend.header')

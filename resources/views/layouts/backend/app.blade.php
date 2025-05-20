@@ -50,27 +50,19 @@
                             @show
                         </ul>
                     </div>
-
-                    <div class="col-md-4 ml-auto">
-                        <form action={{ route('home.search') }} method="POST">
-                            @csrf
-                            <div class="b-search">
-                                <input name="search" type="text" placeholder="Search" />
-                                <button type="submit"><i class="fa fa-search"></i></button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
 
             </div>
         </div>
         <!-- Breadcrumb End -->
+        
         <main class="py-4">
             @yield('content')
         </main>
 
         @yield('footer')
         @stack('js')
+    </div>
 </body>
 
 </html>

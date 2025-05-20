@@ -1,4 +1,6 @@
-
+@section('title')
+    {{__('Terms')}}
+@endsection
 @extends('layouts.frontend.app')
 @section('header')
     @include('layouts.frontend.header')

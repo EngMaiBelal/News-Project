@@ -1,3 +1,6 @@
+@section('title') 
+{{__('Contact')}}
+@endsection
 
 @extends('layouts.frontend.app')
 @section('header')

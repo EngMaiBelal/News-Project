@@ -1,6 +1,7 @@
-
+@section('title')
+{{__('About')}}
+@endsection
 @extends('layouts.frontend.app')
-
 @section('header')
     @include('layouts.frontend.header')
 @endsection

@@ -1,9 +1,13 @@
+@section('title') 
+    {{__('Dashboard')}}
+@endsection
 @extends('layouts.frontend.app')
 @section('header')
     @include('layouts.frontend.header')
 @endsection
 @section('breadcrumb')
     @parent
+    <li class="breadcrumb-item active">{{__('Dashboard')}}</li>
 @endsection
 
 @section('content')
@@ -11,26 +15,30 @@
 <div class="dashboard container">
   <!-- Sidebar -->
   <aside class="col-md-3 nav-sticky dashboard-sidebar">
-      <!-- User Info Section -->
-      <div class="user-info text-center p-3">
-          <img src="" alt="User Image" class="rounded-circle mb-2"
-              style="width: 80px; height: 80px; object-fit: cover" />
-          <h5 class="mb-0" style="color: #ff6f61">Salem Taha</h5>
-      </div>
+    <!-- User Info Section -->
+    <div class="user-info text-center p-3">
+        <img src="{{asset(auth()->user()->image)}}" alt="User Image" class="rounded-circle mb-2"
+            style="width: 80px; height: 80px; object-fit: cover" />
+        <h5 class="mb-0">
+            {{ ucfirst(Auth::user()->name) }}
+        </h5>
+    </div>
 
-      <!-- Sidebar Menu -->
-      <div class="list-group profile-sidebar-menu">
-          <a href="./dashboard.html" class="list-group-item list-group-item-action active menu-item" data-section="profile">
-              <i class="fas fa-user"></i> Profile
-          </a>
-          <a href="./notifications.html" class="list-group-item list-group-item-action menu-item" data-section="notifications">
-              <i class="fas fa-bell"></i> Notifications
-          </a>
-          <a href="./setting.html" class="list-group-item list-group-item-action menu-item" data-section="settings">
-              <i class="fas fa-cog"></i> Settings
-          </a>
-      </div>
-  </aside>
+    <!-- Sidebar Menu -->
+    <div class="list-group profile-sidebar-menu">
+        <a href="{{ route('dashboard') }}" class="list-group-item list-group-item-action active menu-item"
+            data-section="profile">
+            <i class="fas fa-user"></i> {{__('Profile')}}
+        </a>
+        <a href="{{ route('notifications.index') }}" class="list-group-item list-group-item-action menu-item"
+            data-section="notifications">
+            <i class="fas fa-bell"></i> {{__('Notifications')}}
+        </a>
+        <a href="{{ route('settings.index') }}" class="list-group-item list-group-item-action menu-item" data-section="settings">
+            <i class="fas fa-cog"></i> {{__('Settings')}}
+        </a>
+    </div>
+</aside>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -38,8 +46,8 @@
       <section id="profile" class="content-section active">
           <h2>User Profile</h2>
           <div class="user-profile mb-3">
-              <img src="" alt="User Image" class="profile-img rounded-circle" style="width: 100px; height: 100px;" />
-              <span class="username">Salem Taha</span>
+              <img src="{{asset(auth()->user()->image)}}" alt="User Image" class="profile-img rounded-circle" style="width: 100px; height: 100px;" />
+              <span class="username">{{ucfirst(auth()->user()->name)}}</span>
           </div>
           <br>
 
@@ -66,9 +74,9 @@
                       <option value="tech">Tech</option>
                       <option value="life">Life</option>
                   </select>
-
+                 
                   <!-- Enable Comments Checkbox -->
-                  <label class="form-check-label mb-2">
+                  <label class="form-check-label mb-2 ml-4">
                       <input type="checkbox" class="form-check-input" /> Enable Comments
                   </label><br>
 
@@ -84,9 +92,9 @@
                   <!-- Post Item -->
                   <div class="post-item mb-4 p-3 border rounded">
                       <div class="post-header d-flex align-items-center mb-2">
-                          <img src="" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px;" />
+                          <img src="{{asset(auth()->user()->image)}}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px;" />
                           <div class="ms-3">
-                              <h5 class="mb-0">Salem Taha</h5>
+                              <h5 class="mb-0">{{ ucfirst(auth()->user()->name) }}</h5>
                               <small class="text-muted">2 hours ago</small>
                           </div>
                       </div>
@@ -151,11 +159,10 @@
                               </button>
                           </div>
                       </div>
-
                         <!-- Display Comments -->
                         <div class="comments">
                               <div class="comment">
-                                  <img src="" alt="User Image" class="comment-img" />
+                                  <img src="{{asset(auth()->user()->image)}}" alt="User Image" class="comment-img" />
                                   <div class="comment-content">
                                       <span class="username"></span>
                                       <p class="comment-text">first comment</p>

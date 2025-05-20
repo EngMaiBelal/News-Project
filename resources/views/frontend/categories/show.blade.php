@@ -1,3 +1,6 @@
+@section('title')
+{{__('Show')}} {{ $category_by_slug->name }}
+@endsection
 @extends('layouts.frontend.app')
 @section('header')
     @include('layouts.frontend.header')

@@ -24,7 +24,7 @@ class SharedDataServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if(!Cache::has('latest_posts')){
-            $latest_posts = Post::active()->select('slug', 'title', 'created_at', 'id')->latest()->limit(3)->get();
+            $latest_posts = Post::active()->select('slug', 'description', 'title', 'created_at', 'id')->latest()->limit(3)->get();
             Cache::remember('latest_posts', 3600, function() use($latest_posts){
                 return $latest_posts;
             });

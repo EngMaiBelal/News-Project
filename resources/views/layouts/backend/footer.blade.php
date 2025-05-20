@@ -35,17 +35,21 @@
                 <div class="footer-widget">
                     <h3 class="title">Quick Links</h3>
                     <ul>
-                        <li><a href="{{route('home.index')}}" class="nav-item nav-link active">Home</a></li>
-                        <li><a href="{{route('home.contact.index')}}" class="nav-item nav-link active">Contact Us</a></li>
-                   </ul>
+                        <li><a href="#">Lorem ipsum</a></li>
+                        <li><a href="#">Pellentesque</a></li>
+                        <li><a href="#">Aenean vulputate</a></li>
+                        <li><a href="#">Vestibulum sit amet</a></li>
+                        <li><a href="#">Nam dignissim</a></li>
+                    </ul>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="footer-widget">
                     <h3 class="title">{{ $latest_posts->first()->title}}</h3>
                     <div class="newsletter">
                         <p style="text-align: justify;">
-                            {{ $latest_posts->first()->description }}
+                            {{ $latest_posts->first()->description}}
                         </p>
                         
                         <form action={{ route('home.news.subscriber')}} method="post">
@@ -68,10 +72,8 @@
 <div class="footer-menu">
     <div class="container">
         <div class="f-menu">
-            <a href="{{ route('home.terms')}}">Terms of use</a>
-            <a href="{{ route('home.privacy')}}">Privacy policy</a>
-            <a href="{{ route('home.index') }}">News</a>
-            <a href="{{ route('home.contact.index') }}">Contact us</a>
+            <li><a href="{{route('home.index')}}" class="nav-item nav-link active">Home</a></li>
+            <li><a href="{{route('home.contact.index')}}" class="nav-item nav-link active">Contact Us</a></li>
         </div>
     </div>
 </div>
@@ -103,7 +105,6 @@
  <!-- JavaScript Libraries -->
  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
  <script src={{asset("assets/frontend/lib/easing/easing.min.js")}}></script>
  <script src={{asset("assets/frontend/lib/slick/slick.min.js")}}></script>
 
