@@ -49,7 +49,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('dashboard') }}">
+                            <a class="dropdown-item" href="{{ route('home.user.dashboard.profile') }}">
                                 {{ __('Profile') }}
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -91,10 +91,10 @@
                     </div>
                     {{-- <a href="{{ route('home.about')}}" class="nav-item nav-link">Single Page</a> --}}
                     <a href="{{ route('home.contact.index') }}" class="nav-item nav-link">Contact Us</a>
-                    <a href="{{ route('dashboard') }}" class="nav-item nav-link">Dashboard</a>
+                    <a href="{{ route('home.user.dashboard.profile') }}" class="nav-item nav-link">Dashboard</a>
                 </div>
                 <div class="social ml-auto">
-                    @auth<a href="{{ route('notifications.index') }}" title="notification"><i class="fas fa-bell"></i></a>@endauth
+                    @auth<a href="{{ route('home.user.dashboard.notifications.index') }}" title="notification"><i class="fas fa-bell"></i></a>@endauth
                     <a href="{{ $settings->twitter }}" title="twitter"><i class="fab fa-twitter"></i></a>
                     <a href="{{ $settings->facebook }}" title="facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="{{ $settings->youtube }}" title="youtube"><i class="fab fa-youtube"></i></a>

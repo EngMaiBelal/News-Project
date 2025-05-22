@@ -15,22 +15,28 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Favicon -->
-    {{-- <link href={{ asset('assets/frontend/img/favicon.ico') }} rel="icon" /> --}}
     <link href={{ Storage::url('images/' . $settings->favicon) }} rel="icon" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet" />
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <!-- CSS Libraries -->
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
-    <link href={{ asset('assets/frontend/lib/slick/slick.css') }} rel="stylesheet" />
-    <link href={{ asset('assets/frontend/lib/slick/slick-theme.css') }} rel="stylesheet" />
-
+    
     <!-- Template Stylesheet -->
-    <link href={{ asset('assets/frontend/css/style.css') }} rel="stylesheet" />
+    <link href="{{ asset('assets/frontend/lib/slick/slick.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/frontend/lib/slick/slick-theme.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/frontend/css/style.css') }}" rel="stylesheet" />
 
+    <!-- FileInput CSS -->
+    <link href="{{ asset('assets/vendor/file-input/css/fileinput.min.css') }}" rel="stylesheet">
+    
+    <!-- Summer Note CSS -->
+    <link href="{{ asset('assets/vendor/summer-note/summernote-bs4.min.css') }}" rel="stylesheet">
+    
     @yield('css')
 </head>
 

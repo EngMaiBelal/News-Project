@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Contact;
-use App\Http\Requests\frontend\ContactStoreRequest;
+use App\Http\Requests\Frontend\ContactStoreRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

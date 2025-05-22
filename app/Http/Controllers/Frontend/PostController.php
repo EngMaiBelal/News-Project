@@ -29,7 +29,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -52,7 +52,7 @@ class PostController extends Controller
                     ->get();
         return view('frontend.posts.show', compact('post_by_slug','posts_of_category'));
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */

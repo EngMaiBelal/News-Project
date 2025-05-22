@@ -67,6 +67,6 @@ class RegisteredUserController extends Controller
         flash()->success("Register Successfully");
         
         return redirect(route('home.index', absolute: false));
-        // return redirect(route('dashboard', absolute: false));
+        // return redirect(route('home.user.dashboard.profile', absolute: false));
     }
 }

@@ -102,11 +102,19 @@
 <!-- Back to Top -->
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
- <!-- JavaScript Libraries -->
- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
- <script src={{asset("assets/frontend/lib/easing/easing.min.js")}}></script>
- <script src={{asset("assets/frontend/lib/slick/slick.min.js")}}></script>
+ <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
- <!-- Template Javascript -->
- <script src={{asset("assets/frontend/js/main.js")}}></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="{{asset('assets/frontend/lib/easing/easing.min.js')}}"></script>
+<script src="{{asset('assets/frontend/lib/slick/slick.min.js')}}"></script>
+<script src="{{asset('assets/frontend/js/main.js')}}"></script>
+<!-- Bootstrap File Input JS -->
+<script src="{{ asset('assets/vendor/file-input/themes/fa4/theme.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/file-input/js/fileinput.min.js') }}"></script>
+<!-- Bootstrap Summer Note JS -->
+<script src="{{ asset('assets/vendor/file-input/themes/fa4/theme.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/summer-note/summernote-bs4.min.js') }}"></script>

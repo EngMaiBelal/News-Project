@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Mail\frontend\NewSubscriberMail;
 use App\Http\Controllers\Controller;
 use App\Models\NewsSubscriber;
-use App\Http\Requests\frontend\NewsSubscriberRequest;
+use App\Http\Requests\Frontend\NewsSubscriberRequest;
 
 class NewsSubscriberController extends Controller
 {

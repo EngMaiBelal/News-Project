@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\ProfileController;
-use App\Http\Controllers\Backend\SettingsController;
-use App\Http\Controllers\Backend\NotificationsController;
+use App\Http\Controllers\Backend\UserDashboard\ProfileController;
+use App\Http\Controllers\Backend\UserDashboard\SettingsController;
+use App\Http\Controllers\Backend\UserDashboard\NotificationsController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\frontend\PostController;
 use App\Http\Controllers\Frontend\AboutController;
@@ -16,9 +16,6 @@ use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\NewsSubscriberController;
 
 Route::redirect('/', '/home');
-Route::get('/dashboardd', function(){
-    return view('backend.dashboard');
-});
 
 Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
@@ -42,21 +39,24 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
         Route::post('/store', [ContactController::class, 'store'])->name('store');
     });
     Route::match(['get', 'post'] ,'/search', SearchController::class)->name('search');
-});
-
-Route::get('/dashboard', function () {
-    return view('backend.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::prefix('/profile')->group(function () {  
-        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // User Dashboard
+    Route::prefix('/account/dashboard')->name('user.dashboard.')->middleware(['auth', 'verified'])->group(function () {
+        Route::prefix('/profile')->name('profile')->group(function () {  
+            Route::get('/', [ProfileController::class, 'index']);
+            Route::post('/store-post', [ProfileController::class, 'store'])->name('.post.store');
+            // Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+            // Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        });
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
     });
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
+
 
 });
+
+
+
+
 
 require __DIR__.'/auth.php';

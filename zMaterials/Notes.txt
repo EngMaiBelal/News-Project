@@ -2368,7 +2368,7 @@ _____________________________________
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <a class="dropdown-item" href="{{ route('home.user.dashboard.profile.profile.edit') }}">
                                         {{ __('Profile') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -2475,3 +2475,56 @@ _____________________________________
     - Route::redirect('/', '/home');
     لو انا كتبت اليورل 
     127.0.0.1:8000 هيوديني علي صفحة الهوم
+
+_____________________________________
+Handel dashboard User
+_____________________________________
+- Download bootstrab-inputfile
+        - Download source code from ---> https://github.com/kartik-v/bootstrap-fileinput.
+        - Copy css, img, scss, theme, Js.
+        - Add it in ---> News-WEB\public\assets\vendor.
+        - هستدعي الملفين في الlayouts 
+            - resources\views\layouts\backend\app.blade.php
+                <link href={{ asset('assets/vendor/file-input/css/fileinput.min.css') }} rel="stylesheet" />
+            - resources\views\layouts\backend\footer.blade.php
+                <script src={{asset("assets/vendor/file-input/js/fileinput.min.js")}}></script>
+            - resources\views\backend\dashboard.blade.php
+                @push('js')
+                    <script> 
+                        $(function(){
+                            $('postImage').fileinput();
+                        });
+                    </script>
+                @endpush
+- Download summer-note package
+    - Copy font, lang, plugin, 
+        summernote-bs4.js,
+        summernote-bs4.css,
+        summernote-bs4.js.map,
+        summernote-bs4.min.css,
+        summernote-bs4.min.js,
+        summernote-bs4.license.txt,
+        summernote-bs4.min.js   ---> in public\assets\vendor\summer-note
+    
+    - <!-- Summer Note CSS -->
+        <link href="{{ asset('assets/vendor/summer-note/summernote-bs4.min.css') }}" rel="stylesheet">
+    - <!-- Bootstrap Summer Note JS -->
+        <script src="{{ asset('assets/vendor/file-input/themes/fa4/theme.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/summer-note/summernote-bs4.min.js') }}"></script>
+    - In dashboard 
+        $('#postContent').summernote({
+                height: 300
+        });
+_____________________________________
+Add post in profile
+_____________________________________
+        - PostStoreRequest
+            return [
+                'title' => ['required','string' ,'min:3', 'max:50'],
+                'description' => ['required', 'min:10'],
+                'category_id' => ['required', 'exists:category,id'],
+                'comment_able' => ['required', 'in:on,off']
+                'images' => ['required'],
+                'images.' => ['image','mimes:jpg,png']
+            ];
+        

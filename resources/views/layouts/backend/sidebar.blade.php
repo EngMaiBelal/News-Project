@@ -11,15 +11,15 @@
 
     <!-- Sidebar Menu -->
     <div class="list-group profile-sidebar-menu">
-        <a href="{{ route('profile.edit') }}" class="list-group-item list-group-item-action active menu-item"
+        <a href="{{ route('home.user.dashboard.profile.profile.edit') }}" class="list-group-item list-group-item-action active menu-item"
             data-section="profile">
             <i class="fas fa-user"></i> {{__('Profile')}}
         </a>
-        <a href="{{ route('notifications.index') }}" class="list-group-item list-group-item-action menu-item"
+        <a href="{{ route('home.user.dashboard.notifications.index') }}" class="list-group-item list-group-item-action menu-item"
             data-section="notifications">
             <i class="fas fa-bell"></i> {{__('Notifications')}}
         </a>
-        <a href="{{ route('settings.index') }}" class="list-group-item list-group-item-action menu-item" data-section="settings">
+        <a href="{{ route('home.user.dashboard.settings.index') }}" class="list-group-item list-group-item-action menu-item" data-section="settings">
             <i class="fas fa-cog"></i> {{__('Settings')}}
         </a>
     </div>
