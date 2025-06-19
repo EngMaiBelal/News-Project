@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'user_name' => fake()->userName(),
             // 'image' => fake()->imageUrl(),
-            'image' => 'user-default.png',
+            'image' => 'uploads/users/user-default.png',
             'status' => fake()->randomElement([1, 0]),
             'country' => fake()->country(),
             'city' => fake()->city(),

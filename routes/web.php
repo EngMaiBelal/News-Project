@@ -41,12 +41,13 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
     Route::match(['get', 'post'] ,'/search', SearchController::class)->name('search');
     
     // User Dashboard
-    Route::prefix('/account/dashboard')->name('user.dashboard.')->middleware(['auth', 'verified'])->group(function () {
-        Route::prefix('/profile')->name('profile')->group(function () {  
+    Route::prefix('/user/dashboard')->name('user.dashboard.')->middleware(['auth', 'verified'])->group(function () {
+        Route::prefix('/profile')->name('profile')->group(function () {
             Route::get('/', [ProfileController::class, 'index']);
-            Route::post('/store-post', [ProfileController::class, 'store'])->name('.post.store');
-            // Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
-            // Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+            Route::post('/store-post', [ProfileController::class, 'storePost'])->name('.post.store');
+            Route::get('/edit-post/{post:slug}', [ProfileController::class, 'editPost'])->name('.post.edit');
+            Route::post('/update-post', [ProfileController::class, 'updatePost'])->name('.post.update');
+            Route::delete('/delete-post/{post:slug}', [ProfileController::class, 'destroyPost'])->name('.post.destroy');
         });
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');

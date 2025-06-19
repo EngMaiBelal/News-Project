@@ -49,7 +49,7 @@
                     <h3 class="title">{{ $latest_posts->first()->title}}</h3>
                     <div class="newsletter">
                         <p style="text-align: justify;">
-                            {{ $latest_posts->first()->description}}
+                            {!! $latest_posts->first()->description !!}
                         </p>
                         
                         <form action={{ route('home.news.subscriber')}} method="post">

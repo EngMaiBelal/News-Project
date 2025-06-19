@@ -1,3 +1,6 @@
+@section
+    {{__('Forget-Password')}}
+@endsection
 @extends('layouts.frontend.app')
 @section('header')
     @include('layouts.frontend.header')

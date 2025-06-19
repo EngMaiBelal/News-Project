@@ -27,7 +27,13 @@ class PostStoreRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'],
             'comment_able' => ['required', 'in:on,off'],
             'images' => ['required'],
-            'images.' => ['image','mimes:jpg,png']
+            'images.' => ['image','mimes:jpg,jpeg,png,gif']
         ];
     }
+    # Customize the error messages
+    // public function attributes(): array{
+    //     return [
+    //         'title'=>'Post Title'
+    //     ];
+    // } 
 }

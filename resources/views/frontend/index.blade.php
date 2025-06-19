@@ -22,7 +22,7 @@
                         @foreach ($latest_posts as $post)
                             <div class="col-md-6">
                                 <div class="tn-img">
-                                    <img src={{ $post->imagePosts->first()->path }} />
+                                    <img src={{ $post->imagePosts->first()->path }}  style="height: 383px; width: 540px"/>
                                     <div class="tn-title">
                                         <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
@@ -36,7 +36,7 @@
                         @foreach($main_posts as $post)
                             <div class="col-md-6">
                                 <div class="tn-img">
-                                    <img src={{ $post->imagePosts->first()->path }} />
+                                    <img src={{ $post->imagePosts->first()->path }}  style="height: 195px; width: 280px"/>
                                     <div class="tn-title">
                                         <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                                     </div>
@@ -184,7 +184,7 @@
                         @foreach ($posts as $post)
                             <div class="col-md-4">
                                 <div class="mn-img">
-                                    <img src="{{ $post->imagePosts->first()->path }}" />
+                                    <img src="{{ $post->imagePosts->first()->path }}"  style="height: 198px; width: 255px" />
                                     {{-- <img src="{{ Storage::url('images/' . $post->imagePosts->first()->name)}}" /> --}}
                                     <div class="mn-title">
                                         <a href="{{ route('home.posts.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>

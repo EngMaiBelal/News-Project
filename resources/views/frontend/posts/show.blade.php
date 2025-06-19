@@ -27,13 +27,10 @@
                         <div class="carousel-inner">
                             @foreach ($post_by_slug->imagePosts as $index => $image)
                                 <div class="carousel-item @if ($index == 0) active @endif">
-                                    <img src={{ $image->path }} class="d-block w-100" alt="First Slide">
+                                    <img src={{ asset($image->path) }} class="d-block w-100" alt="First Slide">
 
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5> {{ $post_by_slug->title }}</h5>
-                                        <p>
-                                            {{ substr($post_by_slug->description, 0, 80) }}...
-                                        </p>
                                     </div>
                                 </div>
                             @endforeach
@@ -50,9 +47,9 @@
                     <div class="sn-content" id="postContent">
                         Breaking News: {{ $post_by_slug->title }} </br>
                         Date: {{ $post_by_slug->created_at }} </br> </br>
-                        {{ $post_by_slug->description }}
+                        {!! $post_by_slug->description !!}
                     </div>
-
+                    @if($post_by_slug->comment_able)
                     <!-- Comment Section -->
                     <div class="comment-section">
                         <!-- Comment Input -->
@@ -71,7 +68,7 @@
                         <div class="comments">
                             @foreach ($post_by_slug->comments as $comment)
                                 <div class="comment">
-                                    <img src={{ Storage::url('images/') . $comment->user->image }} alt="User Image"
+                                    <img src={{ asset($comment->user->image) }} alt="User Image"
                                         class="comment-img" />
                                     <div class="comment-content">
                                         <span class="username">{{ $comment->user->user_name }}</span>
@@ -82,19 +79,23 @@
                             <!-- Add more comments here for demonstration -->
                         </div>
 
-                        <!-- Show More Button -->
-
-                        <button id="showMoreBtn" class="show-more-btn">
-                            Show more
-                        </button>
-                    
+                            <!-- Show More Button -->
+                            @if($post_by_slug->comments_count > 1)
+                                <button id="showMoreBtn" class="show-more-btn">
+                                    Show more
+                                </button>
+                            @endif
 
                             <div class="p-3 text-center">
                                 <span class=" comments-count" value="{{ $post_by_slug->comments_count }}"> Comments Number: (
                                     {{ $post_by_slug->comments_count }} )</span>
                             </div>
                     </div>
-
+                    @else
+                    <div class="alert alert-dark">
+                        Comments are not avaliable 
+                    </div>
+                    @endif
                     <!-- Related News -->
                     <div class="sn-related">
                         <h2>Related News</h2>
@@ -102,7 +103,7 @@
                             @foreach ($posts_of_category as $post)
                                 <div class="col-md-4">
                                     <div class="sn-img">
-                                        <img src={{ $post->imagePosts->first()->path }} class="img-fluid"
+                                        <img src={{ asset($post->imagePosts->first()->path )}} class="img-fluid"
                                             alt={{ $post->title }} />
                                         <div class="sn-title">
                                             <a href={{ route('home.posts.show', $post->slug) }}
@@ -123,7 +124,7 @@
                                 @foreach ($posts_of_category as $post)
                                     <div class="nl-item">
                                         <div class="nl-img">
-                                            <img src={{ $post->imagePosts->first()->path }} />
+                                            <img src={{ asset($post->imagePosts->first()->path) }} />
                                         </div>
                                         <div class="nl-title">
                                             <a href={{ route('home.posts.show', $post->slug) }}
@@ -162,8 +163,8 @@
                                     <div id="popular" class="container tab-pane active">
                                         @foreach ($popular_posts as $post)
                                             <div class="tn-news">
-                                                <div class="tn-img">
-                                                    <img src={{ $post->imagePosts->first()->path }} />
+                                                <div class="tn-img w-100">
+                                                    <img src={{ asset($post->imagePosts->first()->path) }} />
                                                 </div>
                                                 <div class="tn-title">
                                                     <a href="{{ route('home.posts.show', $post->slug) }}"
@@ -177,8 +178,8 @@
                                     <div id="mostViews" class="container tab-pane fade">
                                         @foreach ($most_views as $post)
                                             <div class="tn-news">
-                                                <div class="tn-img">
-                                                    <img src="{{ $post->imagePosts->first()->path }}" />
+                                                <div class="tn-img w-100">
+                                                    <img src="{{ asset($post->imagePosts->first()->path) }}" />
                                                 </div>
                                                 <div class="tn-title">
                                                     <a href="{{ route('home.posts.show', $post->slug) }}"
@@ -193,8 +194,8 @@
                                     <div id="latest" class="container tab-pane fade">
                                         @foreach ($latest_posts as $post)
                                             <div class="tn-news">
-                                                <div class="tn-img">
-                                                    <img src="{{ $post->imagePosts->first()->path }}"
+                                                <div class="tn-img w-100">
+                                                    <img src="{{ asset($post->imagePosts->first()->path) }}"
                                                         alt={{ $post->title }} />
                                                 </div>
                                                 <div class="tn-title">
@@ -288,9 +289,10 @@
 
                         // Loop through the new comments and append them to the comments section
                         newComments.forEach(function(comment) {
+                            // <img src="{{ Storage::url('images/') }}${comment.user.image}"
                             var newCommentHtml = `
                                 <div class="comment" data-comment-id="${comment.id}">
-                                    <img src="{{ Storage::url('images/') }}${comment.user.image}" alt="User Image" class="comment-img" />
+                                    <img src="{{asset('')}}${comment.user.image}" alt="User Image" class="comment-img" />
                                     <div class="comment-content">
                                         <span class="username">${comment.user.user_name}</span>
                                         <p class="comment-text">${comment.value}</p>

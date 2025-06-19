@@ -1788,14 +1788,10 @@ ____________________
                     <div class="carousel-inner">
                         @foreach ( $post_by_slug->imagePosts as $index => $image )
                             <div class="carousel-item @if($index == 0) active  @endif">
-                                <img src={{ $image->path }} class="d-block w-100"
-                                alt="First Slide">
+                                <img src={{ asset($image->path) }} class="d-block w-100" alt="First Slide">
 
                                 <div class="carousel-caption d-none d-md-block">
                                     <h5> {{ $post_by_slug->title }}</h5>
-                                    <p>
-                                        {{ substr($post_by_slug->description, 0, 80) }}
-                                    </p>
                                 </div>
                             </div>
                         @endforeach
@@ -1947,16 +1943,16 @@ _________________
             </div>
 
             <!-- Show More Button -->
-
-            <button id="showMoreBtn" class="show-more-btn">
-                Show more
-            </button>
-        
-
-                <div class="p-3 text-center">
-                     <span class=" comments-count" value="{{ $post_by_slug->comments_count }}"> Comments Number: (
-                                    {{ $post_by_slug->comments_count }} )</span>
-                </div>
+            @if($post_by_slug->comments_count > 1)
+                <button id="showMoreBtn" class="show-more-btn">
+                    Show more
+                </button>
+            @endif
+    
+            <div class="p-3 text-center">
+                    <span class=" comments-count" value="{{ $post_by_slug->comments_count }}"> Comments Number: (
+                                {{ $post_by_slug->comments_count }} )</span>
+            </div>
         </div>
 
         <script>
@@ -2022,16 +2018,18 @@ Add Comment
 _________________  
     - Add comment by ajax
         - Route::post('/posts/comments/add-comment', [CommentController::class, 'store'])->name('post.comments.store');
-        - <form id="addComment">
-            <div class="comment-input">
-                @csrf
-                <input name="value" type="text" placeholder="Add a comment..." id="commentBox"/>
-                <input type="hidden" name="post_id" value="{{$post_by_slug->id}}">
-                <input type="hidden" name="user_id" value=1>
-                {{-- <input type="text" name="user_id" value={{ auth()->user()->id }} hidden/> --}}
-                <button type="submit">Add Comment</button>
-            </div>
-          </form>
+        - @if($post_by_slug->comment_able)
+            <form id="addComment">
+                <div class="comment-input">
+                    @csrf
+                    <input name="value" type="text" placeholder="Add a comment..." id="commentBox"/>
+                    <input type="hidden" name="post_id" value="{{$post_by_slug->id}}">
+                    <input type="hidden" name="user_id" value=1>
+                    {{-- <input type="text" name="user_id" value={{ auth()->user()->id }} hidden/> --}}
+                    <button type="submit">Add Comment</button>
+                </div>
+            </form>
+          @endif
 
         - $(document).ready(function() {
             $('#addComment').on('submit', function(event){
@@ -2528,3 +2526,225 @@ _____________________________________
                 'images.' => ['image','mimes:jpg,png']
             ];
         
+    Note:-
+        1- return redirect()->intended(route('home.user.dashboard.profile', absolute: false));
+            لازم اللي اباصيه يكون نفس ال url
+        
+        2-  # Customize the error messages in request
+            public function messages(): array{
+                return [
+                    'title.required'=>'The Title Is Required'
+                ];
+            }  هتغير الرساله كلها
+
+             public function attributes(): array{
+                return [
+                    'title'=>'Post Title'
+                ];
+            } هيغير اسم الاتربيوت فقط
+
+            لو عاوز تجيب اليوزر ايدي
+            - $request['user_id'] = Auth::user()->id()
+                OR
+            - $post = auth()->user()-posts()->create([
+                    .........
+               ])
+                هنا هيفهم وويحطها من خلال العلاقه
+_____________________________________
+ProfileController
+    - index()
+        return view('backend.user-dashboard.dashboard');
+
+   - store(PostStoreRequest $request)
+        // comment_able check
+        if( $request['comment_able'] == 'on' ){
+            $request['comment_able'] = 1;
+        }else{
+            $request['comment_able'] = 0;
+        }
+
+        // user_id
+        $request['user_id'] = Auth::user()->id;
+        return $request;
+
+        // store post
+        $post = Post::create([
+            'title' => $request['title'],
+            'description' => $request['description'],
+            'category_id' => $request['category_id'],
+            'comment_able' => $request['comment_able'],
+            'user_id' => $request['user_id']
+        ]);
+        
+        // upload images
+        if($request->hasFile('images')){
+            foreach($request['images'] as $image){
+                $imageName = $post->slug .time().$image->getClientOriginalExtension();
+                $imagePath = $image->storeAs('uploads/posts', $imageName, ['disk' => 'uploads']);
+                
+                // save by relation
+                $post->images()->create([
+                    'path' => $imagePath,
+                    'name' => $imageName,
+                ]);
+            };
+        }
+        Session::flash('success', 'Post Created Successfuly');
+        return redirect()->back();
+
+problems
+1- مشكله انه بيخزن الصور بنفس الاسم لانهم متحملين في نفس الوقت
+- reason     
+    $imageName = $post->slug .time().$image->getClientOriginalExtension();
+- replace with
+    use Illuminate\Support\Str;
+    $imageName = Str::uuid().time().'.'.$image->getClientOriginalExtension();
+
+2- Transaction concept by
+    - ( مشكلة انه لو حصل مشكله في كويري وكويري تاني لا كده هيتسجل وانا عاوزهم وحده واحده )
+    - try{}catch(\Excpetion $e){}
+            
+            
+    - transaction
+        DB::beginTransaction();
+        DB::commit();
+        DB::rollBack();
+
+   -Ex:
+        try{
+            DB::beginTransaction();
+                // ......... some query code. 
+            DB::commit();
+            
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['errors'=> $e->getMessage()]);
+        }
+        Session::flash('success', 'Post Created Successfuly');
+        return redirect()->back();
+
+    - in blade
+        @if(session()->has('errors'))
+            @foreach ( session('errors')->all() as $error )
+            <div class="alert alert-danger">
+                    <li>
+                        {{$error}}
+                    </li>
+            </div>
+            @endforeach
+          @endif
+                            
+3- عندي مشكله في تقطيع الكلام مع طباعه ال html
+    {!! substr($latest_posts->first()->description ,0 ,6) !!}
+    first() هي اللي معطله الموضوع شلتها
+    الفوتر لسه فيه مشكله
+4- size image handle in frontend
+
+_____________________________________
+lesson 54 optmization code
+_____________________________________
+    - php artisan mi:f --seed
+    - delete all images from uploads/posts folder
+    - login by user in db seed already
+        ulices59@example.com
+        password: password
+    - add new post 
+    - sperate files handel from method store
+        - Make class in app\Utils\ImageManager.php
+            - uploadImages($request, $post)
+                if($request->hasFile('images'))
+                    foreach($request['images'] as $image)
+                        $imageName = Str::uuid().time().'.'.$image->getClientOriginalExtension();
+                        $imagePath = $image->storeAs('uploads/posts', $imageName, ['disk' => 'uploads']);
+                        
+                        $post->imagePosts()->create([
+                            'path' => $imagePath,
+                            'name' => $imageName,
+                        ]);
+            - ProfileController extends Controller
+                - store(PostStoreRequest $request, ImageManager $imageManager)
+                    try
+                        .........some code
+                        $imageManager->uploadImages($request, $post); 
+    - مشكلة الكاش عندي اني كل ما اضيف بوست مش ظاهر في الread more 
+        الحل كل مايضيف بوست جديد يمسح الكاش
+        
+        DB::commit();
+        Cache::forget('read_more_posts');
+        Cache::forget('latest_posts');
+        مخير لكن في الحذف للبوست لازم نعمل الخطوة دي
+
+_____________________________________
+Show Post's User 
+_____________________________________
+    - index()
+        // $posts = Post::active()->with('imagePosts')->where('user_id', Auth::user()->id)->get();
+        $posts = auth()->user()->posts()->active()->with('imagePosts')->take(3)->latest()->get();
+        return view('backend.user-dashboard.dashboard', compact('posts')); 
+        هنروح نعرض ده بقي هناك في الداشبورد
+_____________________________________
+Edit And Delete Post's User 
+_____________________________________  
+- web.php
+    Route::get('/edit-post/{post:slug}', [ProfileController::class, 'edit'])->name('.post.edit');
+    Route::post('/update-post', [ProfileController::class, 'update'])->name('.post.update');
+    Route::delete('/delete-post/{post:slug}', [ProfileController::class, 'destroyPost'])->name('.post.destroy');
+- Blade
+    -Edit in blade
+     <a href="{{route('home.user.dashboard.profile.post.edit', $post->slug)}}" class="btn btn-sm btn-outline-primary">
+        <i class="fas fa-edit"></i> Edit
+      </a>
+    - Delete in Blade 
+        - First Way
+            في المسح الشكل هيبوظ
+            <form action="{{route('home.user.dashboard.profile.post.destroy', $post->slug)}}">
+                @csrf
+                @method('Delete')
+                <button>
+                    <i class="fas fa-thumbs-up"></i> Delete
+                </button>
+            </form>
+        - Second Way للحفاظ علي الديزاين
+            <a href="JavaScript:void(0)" onclick="if(confirm('Are You Sure?')){document.getElementById('deletePost__{{$index}}').submit()} return false" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-thumbs-up"></i> Delete
+            </a>
+            <form id="deletePost_{{$index}}" action="{{route('home.user.dashboard.profile.post.destroy', $post->slug)}}" method="POST">
+                @csrf
+                @method('Delete')
+            </form>
+    - Controller
+            public function editPost(Post $post){
+                return $post;
+            }
+            public function destroyPost(Post $post){
+                return $post;
+            }
+_____________________________________
+Delete Post
+_____________________________________
+1- News-WEB\app\Utils\ImageManager.php
+    - use Illuminate\Support\Facades\File;
+    -  deleteImages($post)
+        if($post->imagePosts->count() > 0){
+            foreach($post->imagePosts as $index => $image){
+                if(File::exists(public_path($image->path))){
+                    File::delete(public_path($image->path));
+                }
+            }
+        }
+2- ProfileController
+       - destroyPost(Post $post, ImageManager $imageManager){
+        try{
+            DB::beginTransaction();
+            $imageManager->deleteImages($post);
+            $post->delete();
+            Cache::forget('read_more_posts');
+            Cache::forget('latest_posts');
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['errors'=> $e->getMessage()]);
+        }
+        Session::flash('success', 'Post Delete Successfuly');
+        return redirect()->back();
+    }

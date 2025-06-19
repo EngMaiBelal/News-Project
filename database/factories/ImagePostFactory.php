@@ -24,7 +24,7 @@ class ImagePostFactory extends Factory
             // 'path' => $directoryUrl .'/'. $imageName,
             // 'path' => fake()->imageUrl(),
             'path' => 'https://placehold.co/450x350',
-            'name' => $imageName
+            'name' => 'uploads/posts/'.$imageName
         ];
     }
 }
