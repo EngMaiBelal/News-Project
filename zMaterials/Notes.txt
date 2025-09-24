@@ -2748,3 +2748,90 @@ _____________________________________
         Session::flash('success', 'Post Delete Successfuly');
         return redirect()->back();
     }
+
+
+PHP enter automatic مظبطتش جوه السمر نوت
+<p class="post-content">{!! chunk_split($post->description, 60) !!}</p>
+
+_____________________________________
+Comments By Ajax
+_____________________________________
+        - Route
+           Route::get('/get-comments-post/{post:slug}', [ProfileController::class, 'getCommentsPost'])->name('.post.getComments');
+        - Blade
+        <button id="postComments_{{$index}}" class="btn btn-sm btn-outline-secondary post-comments">
+            <i class="fas fa-comment"></i> Comments
+        </button>
+          <script>
+           $(document).on('click', '.post-comments', function(event){
+            event.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: '{{route("home.user.dashboard.profile.post.getComments, $post->slug")}}',
+                success: function(response){
+                    console.log(response);
+                }
+            })
+           })
+          </script>
+        - Controller
+            public function getCommentsPost(Post $post){
+                return $post;
+            }
+    - عاوز اشوف نتيجه اللي عملته علي الصفحه في Network, fetch/XHR
+    - كده في مشكله انه هيمرر كومنتات البوست الاولاني او الاخراني طول الوقت
+    عاوز يمررلي السلج بتاع البوست اللي انا واقف عليه
+        
+        
+        <button id="postComments_{{$index}}" class="btn btn-sm btn-outline-secondary post-comments" post-slug="{{$post->slug}}">
+         $(document).on('click', '.get-post-comments', function(event){
+            event.preventDefault();
+            let post_slug = $(this).attr("post-slug");
+            $.ajax({
+                type: "GET",
+                url: '{{route("home.user.dashboard.profile.post.getComments", ":post_slug")}}'.replace(':post_slug',post_slug),
+                success: function(comments){
+                    if(comments.data){
+                        $(`#displayComments_${post_slug}`).empty();
+                        $.each(comments.data, function(index, comment){
+                            $(`#displayComments_${post_slug}`).append(`<div class="comment">
+                                            <img src="{{ asset('') }}${comment.user.image}" alt="User Image" class="comment-img" />
+                                            <div class="comment-content">
+                                                <span class="username"></span>
+                                                <p class="comment-text">${comment.value}</p>
+                                            </div>
+                                        </div>`);
+                        })
+                    }else{
+                        $(`#displayComments_${post_slug}`).empty();
+                         $(`#displayComments_${post_slug}`).append(`<div class="comment">
+                                            <div class="comment-content alert alert-primary text-center">
+                                                <span class="username"></span>
+                                                <p class="comment-text">No Comments Yet</p>
+                                            </div>
+                                        </div>`);
+                    }
+
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            })
+        })
+        - getCommentsPost(Post $post)
+        // $comments = $post->comments()->with('user', 'post')->get();
+        $comments = Comment::where('post_id' ,$post->id)->with('user')->get();
+    
+        if($comments->isEmpty())
+             return response()->json([
+                'data'=> null,
+                'msg' => "Don't found Comments",
+            ]);
+        else
+             return response()->json([
+                'data'=> $comments,
+                'msg' => "Successfully Sending",
+            ]);
+
+_____________________________________
+_____________________________________

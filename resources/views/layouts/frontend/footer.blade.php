@@ -1,6 +1,3 @@
-@php
-    $description = $latest_posts->first()->description;
-@endphp
 <!-- Footer Start -->
 <div class="footer">
     <div class="container">
@@ -45,11 +42,10 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="footer-widget">
-                    <h3 class="title">{{ $latest_posts->first()->title}}</h3>
+                    <h3 class="title">Subscribe Now</h3>
                     <div class="newsletter">
                         <p style="text-align: justify;">
-
-                            {!! substr($description ,0 ,20) !!}
+                            Subscribe Now !
                         </p>
                         
                         <form action={{ route('home.news.subscriber')}} method="post">

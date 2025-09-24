@@ -180,15 +180,19 @@
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
 
-                                        <a href="JavaScript:void(0)" onclick="if(confirm('Are You Sure?')){document.getElementById('deletePost_{{$index}}').submit()} return false" class="btn btn-sm btn-outline-primary">
+                                        <a href="JavaScript:void(0)" onclick="if(confirm('Are You Sure?')){document.getElementById('deletePost_{{$post->slug}}').submit()} return false" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-thumbs-up"></i> Delete
                                         </a>
 
-                                        <button class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-comment"></i> Comments
+                                        <button id="showComments_{{$post->slug}}" class="btn btn-sm btn-outline-secondary get-post-comments" post-slug="{{$post->slug}}">
+                                            <i class="fas fa-comment"></i> Show Comments
                                         </button>
 
-                                        <form id="deletePost_{{$index}}" action="{{route('home.user.dashboard.profile.post.destroy', $post->slug)}}" method="POST">
+                                        <button id="hideComments_{{$post->slug}}" class="btn btn-sm btn-outline-secondary hide-post-comments d-none" post-slug="{{$post->slug}}">
+                                            <i class="fas fa-comment"></i> Hide Comments
+                                        </button>
+
+                                        <form id="deletePost_{{$post->slug}}" action="{{route('home.user.dashboard.profile.post.destroy', $post->slug)}}" method="POST">
                                             @csrf
                                             @method('Delete')
                                         </form>
@@ -196,15 +200,9 @@
                                 </div>
 
                                 <!-- Display Comments -->
-                                <div class="comments">
-                                    <div class="comment">
-                                        <img src="" alt="User Image" class="comment-img" />
-                                        <div class="comment-content">
-                                            <span class="username"></span>
-                                            <p class="comment-text">first comment</p>
-                                        </div>
-                                    </div>
-                                    <!-- Add more comments here for demonstration -->
+                                <div id="displayComments_{{$post->slug}}" class="comments">
+                                   
+                                    
                                 </div>
                             </div>
 
@@ -227,6 +225,7 @@
 
 @push('js')
     <script>
+        // Summer Note Settings
         $(document).ready(function() {
             if (typeof $.fn.fileinput == 'function') {
                 $('#postImage').fileinput({
@@ -239,6 +238,51 @@
             $('#postContent').summernote({
                 height: 300
             });
+        });
+        // get post comments
+        $(document).on('click', '.get-post-comments', function(event){
+            event.preventDefault();
+            let post_slug = $(this).attr("post-slug");
+           
+
+            $.ajax({
+                type: "GET",
+                url: '{{route("home.user.dashboard.profile.post.getComments", ":post_slug")}}'.replace(':post_slug',post_slug),
+                success: function(comments){
+                    if(comments.data){
+                        $(`#displayComments_${post_slug}`).empty();
+                        $.each(comments.data, function(index, comment){
+                            $(`#displayComments_${post_slug}`).append(`<div class="comment">
+                                            <img src="{{ asset('') }}${comment.user.image}" alt="User Image" class="comment-img" />
+                                            <div class="comment-content">
+                                                <span class="username"></span>
+                                                <p class="comment-text">${comment.value}</p>
+                                            </div>
+                                        </div>`);
+                        });
+                        $(`#showComments_${post_slug}`).hide();
+                        $(`#hideComments_${post_slug}`).removeClass("d-none");
+                    }else{
+                        $(`#showComments_${post_slug}`).prop("disabled", true);
+                        $(`#displayComments_${post_slug}`).append(`<div class="comment">
+                                            <div class="comment-content alert alert-primary text-center">
+                                                <span class="username"></span>
+                                                <p class="comment-text">No Comments Yet</p>
+                                            </div>
+                                        </div>`);
+                    }
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            })
+        })
+        $(document).on('click', '.hide-post-comments', function(event){
+            let post_slug = $(this).attr("post-slug");
+            event.preventDefault();
+            $(`#displayComments_${post_slug}`).empty();
+            $(`#showComments_${post_slug}`).show();
+            $(`#hideComments_${post_slug}`).addClass("d-none");
         });
     </script>
 @endpush

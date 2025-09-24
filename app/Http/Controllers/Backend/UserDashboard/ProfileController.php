@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\UserDashboard;
 use Illuminate\Support\Facades\Cache;
 use App\Utils\imageManager;
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ class ProfileController extends Controller
         // $posts = Post::active()->with('imagePosts')->where('user_id', Auth::user()->id)->get();
         $posts = auth()->user()->posts()->active()->with('imagePosts')->take(2)->latest()->get();
         // return $posts->first()->imagePosts()->first()->path;
+        // dd($posts);
         return view('backend.user-dashboard.dashboard', compact('posts'));
     } 
 
@@ -76,5 +78,20 @@ class ProfileController extends Controller
         Session::flash('success', 'Post Delete Successfuly');
         return redirect()->back();
     }
-
+    public function getCommentsPost(Post $post){
+        // $comments = $post->comments()->with('user', 'post')->get();
+        $comments = Comment::where('post_id' ,$post->id)->with('user')->get();
+        
+        if($comments->isEmpty()){
+             return response()->json([
+                'data'=> null,
+                'msg' => "Don't found Comments",
+            ]);
+        }else{
+             return response()->json([
+                'data'=> $comments,
+                'msg' => "Successfully Sending",
+            ]);
+        }
+    }
 }

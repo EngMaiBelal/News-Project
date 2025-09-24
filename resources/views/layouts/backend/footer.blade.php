@@ -46,10 +46,10 @@
 
             <div class="col-lg-3 col-md-6">
                 <div class="footer-widget">
-                    <h3 class="title">{{ $latest_posts->first()->title}}</h3>
+                    <h3 class="title">Subscribe Now</h3>
                     <div class="newsletter">
                         <p style="text-align: justify;">
-                            {!! $latest_posts->first()->description !!}
+                            Subscribe Now !
                         </p>
                         
                         <form action={{ route('home.news.subscriber')}} method="post">

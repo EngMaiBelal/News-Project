@@ -48,16 +48,11 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
             Route::get('/edit-post/{post:slug}', [ProfileController::class, 'editPost'])->name('.post.edit');
             Route::post('/update-post', [ProfileController::class, 'updatePost'])->name('.post.update');
             Route::delete('/delete-post/{post:slug}', [ProfileController::class, 'destroyPost'])->name('.post.destroy');
+            Route::get('/get-comments-post/{post:slug}', [ProfileController::class, 'getCommentsPost'])->name('.post.getComments');
         });
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
     });
-
-
 });
-
-
-
-
 
 require __DIR__.'/auth.php';
