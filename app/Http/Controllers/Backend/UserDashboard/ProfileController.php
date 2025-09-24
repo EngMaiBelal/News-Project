@@ -18,7 +18,7 @@ class ProfileController extends Controller
 {
     public function index(){
         // $posts = Post::active()->with('imagePosts')->where('user_id', Auth::user()->id)->get();
-        $posts = auth()->user()->posts()->active()->with('imagePosts')->take(2)->latest()->get();
+        $posts = auth()->user()->posts()->active()->with('imagePosts')->take(3)->latest()->get();
         // return $posts->first()->imagePosts()->first()->path;
         // dd($posts);
         return view('backend.user-dashboard.dashboard', compact('posts'));
@@ -61,7 +61,7 @@ class ProfileController extends Controller
     }
 
     public function editPost(Post $post){
-        return 'ok';
+        return view('backend.user-dashboard.edit-post', compact('posts'));
     }
     public function destroyPost(Post $post, ImageManager $imageManager){
         try{

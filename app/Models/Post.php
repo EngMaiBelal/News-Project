@@ -19,6 +19,7 @@ class Post extends Model
         'title',
         'description',
         'comment_able',
+        'views_num',
         'status',
         'slug',
         'user_id',

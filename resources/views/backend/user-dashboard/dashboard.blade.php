@@ -183,14 +183,15 @@
                                         <a href="JavaScript:void(0)" onclick="if(confirm('Are You Sure?')){document.getElementById('deletePost_{{$post->slug}}').submit()} return false" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-thumbs-up"></i> Delete
                                         </a>
+                                        @if($post->comment_able)
+                                            <button id="showComments_{{$post->slug}}" class="btn btn-sm btn-outline-secondary get-post-comments" post-slug="{{$post->slug}}">
+                                                <i class="fas fa-comment"></i> Show Comments
+                                            </button>
 
-                                        <button id="showComments_{{$post->slug}}" class="btn btn-sm btn-outline-secondary get-post-comments" post-slug="{{$post->slug}}">
-                                            <i class="fas fa-comment"></i> Show Comments
-                                        </button>
-
-                                        <button id="hideComments_{{$post->slug}}" class="btn btn-sm btn-outline-secondary hide-post-comments d-none" post-slug="{{$post->slug}}">
-                                            <i class="fas fa-comment"></i> Hide Comments
-                                        </button>
+                                            <button id="hideComments_{{$post->slug}}" class="btn btn-sm btn-outline-secondary hide-post-comments d-none" post-slug="{{$post->slug}}">
+                                                <i class="fas fa-comment"></i> Hide Comments
+                                            </button>
+                                        @endif
 
                                         <form id="deletePost_{{$post->slug}}" action="{{route('home.user.dashboard.profile.post.destroy', $post->slug)}}" method="POST">
                                             @csrf

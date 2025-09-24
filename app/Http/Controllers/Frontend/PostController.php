@@ -37,19 +37,21 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+
         $post_by_slug = $post->with([
                         'comments' => function($query) {
-                            $query->latest()->limit(3);  // حدّ من عدد التعليقات إلى 3 فقط
+                            $query->latest()->limit(3);
                         }, 
                         'imagePosts',
                         'user'])
                         ->withCount('comments')
-                        ->find($post->id); // بدل first
-
-        $posts_of_category = Post::active()->where('category_id' , $post_by_slug->category->id)
+                        ->find($post->id); //  first don`t work with =>  with ('relation')
+        $post_by_slug->increment("views_num");
+                        $posts_of_category = Post::active()->where('category_id' , $post_by_slug->category->id)
                     ->select('id', 'slug', 'title', 'created_at')
                     ->limit(5)
                     ->get();
+
         return view('frontend.posts.show', compact('post_by_slug','posts_of_category'));
     }
     

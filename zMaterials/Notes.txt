@@ -2834,4 +2834,7 @@ _____________________________________
             ]);
 
 _____________________________________
+no of views
 _____________________________________
+    - In show method in post controller
+        $post_by_slug->increment("views_num");
