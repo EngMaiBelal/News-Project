@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\backend\UserDassboard\PostStoreRequest;
+use App\Http\Requests\Backend\UserDashboard\PostStoreRequest;
 
 class ProfileController extends Controller
 {

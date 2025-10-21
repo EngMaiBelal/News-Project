@@ -1689,7 +1689,7 @@ ____________________
         */
     - In Web.php
         Route::get('about', [AboutController::class, 'index'])->name('about');
-    - In views\frontend\category\show.blade.php
+    - In views\Frontend\category\show.blade.php
         <div class="dropdown-menu">
             @foreach ( $categories as $category)
                 <a href="{{route('home.category.show', $category->slug)}}" class="dropdown-item">{{ $category->name }}</a>
@@ -1918,7 +1918,7 @@ _________________
     - Route
         Route::get('/posts/comments/{post:slug}', [CommentController::class, 'show'])->name('post.comments.show');
     
-    - resources\views\frontend\posts\show.blade.php
+    - resources\views\Frontend\posts\show.blade.php
         <!-- Comment Section -->
         <div class="comment-section">
             <!-- Comment Input -->
@@ -2146,7 +2146,7 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
 _________________
 Web searching
 _________________ 
-- views\frontend\search.blade.php
+- views\Frontend\search.blade.php
     @extends('layouts.frontend.app')
     @section('header')
         @include('layouts.frontend.header')
@@ -2482,11 +2482,11 @@ _____________________________________
         - Copy css, img, scss, theme, Js.
         - Add it in ---> News-WEB\public\assets\vendor.
         - هستدعي الملفين في الlayouts 
-            - resources\views\layouts\backend\app.blade.php
+            - resources\views\layouts\Backend\app.blade.php
                 <link href={{ asset('assets/vendor/file-input/css/fileinput.min.css') }} rel="stylesheet" />
-            - resources\views\layouts\backend\footer.blade.php
+            - resources\views\layouts\Backend\footer.blade.php
                 <script src={{asset("assets/vendor/file-input/js/fileinput.min.js")}}></script>
-            - resources\views\backend\dashboard.blade.php
+            - resources\views\Backend\dashboard.blade.php
                 @push('js')
                     <script> 
                         $(function(){

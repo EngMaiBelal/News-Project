@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\frontend;
+namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
-use App\Mail\frontend\NewSubscriberMail;
+use App\Mail\Frontend\NewSubscriberMail;
 use App\Http\Controllers\Controller;
 use App\Models\NewsSubscriber;
 use App\Http\Requests\Frontend\NewsSubscriberRequest;
