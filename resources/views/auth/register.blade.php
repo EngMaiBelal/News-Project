@@ -108,6 +108,7 @@
                             <input id="password" type="password"
                                    class="form-control @error('password') is-invalid @enderror"
                                    name="password" required autocomplete="new-password">
+                            <span class="password-hint">Password must be at least 8 characters long and include letters, numbers, and special characters.</span>
                             @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -128,7 +129,16 @@
                             <a class="text-decoration-none" href="{{ route('login') }}">
                                 {{ __('Already registered?') }}
                             </a>
-
+                            {{-- Bio --}}
+                            <div class="mb-3">
+                                <label for="bio" class="form-label">{{ __('bio') }}</label>
+                                <input id="bio" type="text"
+                                    class="form-control @error('bio') is-invalid @enderror"
+                                    name="bio" value="{{ old('bio') }}" required autocomplete="bio">
+                                @error('bio')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <button type="submit" class="btn btn-primary">
                                 {{ __('Register') }}
                             </button>

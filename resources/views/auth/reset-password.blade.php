@@ -40,6 +40,7 @@
                    class="form-control @error('password') is-invalid @enderror"
                    name="password"
                    required autocomplete="new-password">
+            <span class="password-hint">Password must be at least 8 characters long and include letters, numbers, and special characters.</span>
             @error('password')
                 <div class="invalid-feedback">
                     {{ $message }}

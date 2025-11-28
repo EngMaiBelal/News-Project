@@ -42,15 +42,20 @@ Route::group(['prefix' => '/home', 'as' => 'home.'], function () {
     
     // User Dashboard
     Route::prefix('/user/dashboard')->name('user.dashboard.')->middleware(['auth', 'verified'])->group(function () {
-        Route::prefix('/profile')->name('profile')->group(function () {
-            Route::get('/', [ProfileController::class, 'index']);
-            Route::post('/store-post', [ProfileController::class, 'storePost'])->name('.post.store');
-            Route::get('/edit-post/{post:slug}', [ProfileController::class, 'editPost'])->name('.post.edit');
-            Route::post('/update-post', [ProfileController::class, 'updatePost'])->name('.post.update');
-            Route::delete('/delete-post/{post:slug}', [ProfileController::class, 'destroyPost'])->name('.post.destroy');
-            Route::get('/get-comments-post/{post:slug}', [ProfileController::class, 'getCommentsPost'])->name('.post.getComments');
+        Route::prefix('/profile')->name('profile.post.')->group(function () {
+            Route::get('/', [ProfileController::class, 'index'])->name('index');
+            Route::post('/store-post', [ProfileController::class, 'storePost'])->name('store');
+            Route::get('/edit-post/{post:slug}', [ProfileController::class, 'editPost'])->name('edit');
+            Route::post('/update-post', [ProfileController::class, 'updatePost'])->name('update');
+            Route::delete('/delete-post/{post:slug}', [ProfileController::class, 'destroyPost'])->name('destroy');
+            Route::get('/get-comments-post/{post:slug}', [ProfileController::class, 'getCommentsPost'])->name('getComments');
         });
-        Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::prefix('/settings')->name('settings.')->group(function () {
+            Route::get('/', [SettingsController::class, 'index'])->name('index');
+            Route::post('/update', [SettingsController::class, 'update'])->name('update');
+            Route::post('/update-password', [SettingsController::class, 'updatePassword'])->name('update.password');
+        });
+
         Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
     });
 });

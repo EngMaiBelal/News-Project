@@ -6,7 +6,7 @@ ____________________
         1- User Migration:
             id();
             string('name');
-            string('user_name');
+            string('user_name')->unique;
             string('email')->unique();
             string('phone')->unique();
             timestamp('email_verified_at')->nullable();
@@ -2834,7 +2834,345 @@ _____________________________________
             ]);
 
 _____________________________________
-no of views
+No of views
 _____________________________________
     - In show method in post controller
         $post_by_slug->increment("views_num");
+
+__________________________________________________________________________________________________________________________________________
+خطوات عمل نسخه من مشروع جت
+___________________________
+
+        1	git clone repo-url
+        2	cd project-folder
+        3	composer install
+        4	cp .env.example .env
+        5	php artisan key:generate
+        6	عدل إعدادات DB في .env
+        7	php artisan migrate
+        8	php artisan storage:link
+        9	php artisan serve
+__________________________________________________________
+مكان الصورة فين؟
+__________________________________________________________
+    1- خد بالك الصور هتتحط هنا
+        storage/app/public/images/logo.jpg 
+
+    2- بعد كده:
+        افتح التيرمنال وشغّل الأمر ده علشان Laravel
+        يربط مجلد storage بـ public:
+        php artisan storage:link
+
+    3- ده هيخلي Laravel 
+        يقدر يعرض الصورة على الرابط ده
+        http://127.0.0.1:8000/storage/images/logo.jpg
+______________________________________________________________________________________
+- To make sidebar active 
+        <a href="{{ route('home.user.dashboard.profile')}}" 
+        class="list-group-item list-group-item-action 
+        {{ request()->routeIs('home.user.dashboard.profile') ? 'active' : '' }} menu-item"
+
+_____________________________________
+Settings
+_____________________________________
+1- View --> News-Project\resources\views\backend\user-dashboard\settings.blade.php
+    @extends('layouts.backend.app')
+    @section('title')
+        {{__('Settings')}}
+    @endsection
+    @section('header')
+        @include('layouts.backend.header')
+    @endsection
+    @section('breadcrumb')
+        @parent
+        <li class="breadcrumb-item active">{{ __('Settings') }}</li>
+    @endsection
+    @section('content')
+        <!-- Dashboard Start-->
+        <div class="dashboard container">
+            <!-- Sidebar -->
+            @include('layouts.backend.sidebar')
+            <!-- Main Content -->
+            <form action="{{ route('home.user.dashboard.settings.update') }}" class="settings-form" method="POST" enctype="multipart/form-data">
+            @csrf
+                <input name="name" type="text" id="name" value="{{ ucfirst(auth()->user()->name) }}" />
+                <input name="user_name" type="text" id="username" value="{{ ucfirst(auth()->user()->user_name) }}" />
+                <input name="email" type="email" id="email" value="{{ auth()->user()->email }}" />
+                <input name="phone" type="text" id="phone" value="{{ auth()->user()->phone }}" />
+                <input name="image" type="file" id="profile-image" accept="image/*" />
+                <input name="country" type="text" id="country" placeholder="Enter your country" />
+                <input name="city" type="text" id="city" placeholder="Enter your city" />
+                <input name="street" type="text" id="street" placeholder="Enter your street" />
+                <textarea name="bio" id="bio" placeholder="Tell us about yourself..."></textarea>
+                <button type="submit" class="save-settings-btn"> Save Changes </button>
+            </form>
+        </div>
+        <!-- Dashboard End-->
+    @endsection
+    @section('footer')
+        @include('layouts.backend.footer')
+    @endsection
+
+2- Route
+    Route::prefix('/settings')->name('settings.')->group(function () {
+                Route::get('/', [SettingsController::class, 'index'])->name('index');
+                Route::post('/update', [SettingsController::class, 'update'])->name('update');
+    });
+
+3- SettingsUpdateRequest
+
+    الفرق بين somtimes, nullable
+    ________________________________
+    sometimes يتحكم فقط في: هل الـ key موجود ولا لأ
+    ✔ nullable يتحكم في: قيمة الـ key لو كانت null
+
+    المهم جداً هنا:
+    ________________________________
+    ➤ sometimes ما يوقفش ال-validation لو المفتاح موجود، حتى لو فاضي
+    لو الـ key موجود = الـ validation هيشتغل مهما حصل.
+    علشان كده في الحقول اللي ممكن تكون null لازم تستخدم:
+    ['sometimes', 'nullable', ...]
+
+    use App\Models\User;
+    use Illuminate\Validation\Rule;
+    use Illuminate\Validation\Rules;
+    use Illuminate\Foundation\Http\FormRequest;
+
+    - authorize(): bool
+        return true;
+    - rules(): array
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'user_name' =>['required', 'string', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'email' => ['nullable', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            // 'phone' => ['required','regex:/(01)[0-9]{9}/', 'unique:'.User::class],
+            'phone' => ['nullable','regex:/(01)[0-9]{9}/', Rule::unique(User::class)->ignore($this->user()->id)],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'country' => ['nullable', 'string', 'max:50'],
+            'city' => ['nullable', 'string', 'max:50'],
+            'street' => ['nullable', 'string', 'max:50'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // kilobyte
+        ];
+____________________________________________________
+    Note
+____________________________________________________
+    لو ما اخترتش صورة → Laravel مش بيبعت key للصورة
+    Input من نوع:
+    <input type="file" name="image">
+    لو المستخدم ما اختارش ملف:
+    المتصفح مايبعتش key اسمه image أصلا
+
+    وبالتالي:
+    request()->has('image') = false
+    request()->file('image') = null
+
+    وكمان مش هتشوفيه داخل:
+    dd($request->all()); → لأنه فاضي ومتبعتش
+    وده سلوك طبيعي 100%.
+    ✅ 2. الصور ما بتظهرش في $request->all()
+    حتى لو اختار صورة، برضو:
+    dd($request->all());
+    مش هيظهر ملفات لأن الملفات موجودة في:
+    $request->files
+    أو:
+    $request->file('image');
+    لو اليوزر اختار صوره
+        result:
+        UploadedFile {#123
+        -originalName: "myphoto.jpg",
+        -mimeType: "image/jpeg",
+        ...
+        }
+
+    لو ما اختارش صورة:
+        dd($request->file('image'));   // null
+        dd($request->hasFile('image')); // false
+
+    🧠 الخلاصة
+    ✔ نعم، لو المستخدم لم يرفع صورة → Laravel لا يرسل المفتاح (key) أصلاً
+    ✔ نعم، $request->all() لا يحتوي على الملفات
+    ✔ الملفات يجب فحصها عبر file() أو hasFile() فقط
+____________________________________________________
+    
+4- SettingsController
+    - index()
+        return view('backend.user-dashboard.settings');
+    - update(SettingsUpdateRequest $request, ImageManager $imageManager)
+    $user = auth()->user();
+    $imageData = $imageManager->updateImage($request, $user, 'users');
+    $user->update([
+        'name' => $request->name,
+        'user_name' => $request->user_name,
+        'email' => $request->email ?? $user->email,
+        'phone' => $request->phone ?? $user->phone,
+        'country' => $request->country ?? $user->country,
+        'city' => $request->city ?? $user->city,
+        'street' => $request->street ?? $user->street,
+        'image' => $imageData['path'],
+        'bio' => $request->bio ?? $user->bio,
+        // 'password' => Hash::make($request->password),
+    ]);
+    Session::flash('success', 'Setting Updated Successfuly');
+    return redirect()->back();
+
+4- ImageManager  --> News-Project\app\Utils\ImageManager.php
+    - uploadImages($request, $instance, $instanceName="posts",  $relationName = 'imagePosts'){
+        $imageName = null;
+        $imagePath = null;
+        // upload images
+        if($request->hasFile('images')){
+            foreach($request['images'] as $image){
+                $imageData = $this->generateImage($image, $instanceName);
+                // save by relation
+                $instance->{$relationName}()->create([
+                    'path' => $imageData['path'],
+                    'name' => $imageData['name'],
+                ]);
+            };
+        }
+
+    - deleteImages($instance, $relationName = 'imagePosts'){
+        if($instance->imagePosts->count() > 0){
+            foreach($instance->{$relationName} as $image){
+                if(File::exists(public_path($image->path))){
+                    File::delete(public_path($image->path));
+                }
+            }
+        }
+    }
+
+    - uploadImage($request, $instanceName)
+        $imageName = null;
+        $imagePath = null;
+
+        if($request->hasFile('image')){
+            $imageData = $this->generateImage($request->file('image'), $instanceName);
+            $imageName = $imageData['name'];
+            $imagePath = $imageData['path'];
+        }
+
+        return [
+            'name' => $imageName,
+            'path' => $imagePath,
+        ];
+    
+
+    - updateImage($request, $instance, $instanceName)
+        $imageName = null;
+        $imagePath = $instance->image ?? null;
+        // upload image
+        if($request->hasFile('image')){
+            $imageData = $this->generateImage($request->file('image'), $instanceName);
+            
+            if($imageData['path']){
+                $this->deleteImage($instance);
+                $imagePath = $imageData['path'];
+                $imageName = $imageData['name'];
+            }
+        
+        }
+        return [
+            'name' => $imageName,
+            'path' => $imagePath,
+        ];
+    
+
+    - deleteImage($instance)
+        if ($instance->image && File::exists(public_path($instance->image))) {
+            File::delete(public_path($instance->image));
+        }
+    
+
+    - private function generateImage($image, $instanceName){
+        // $imageName = Str::slug($request->user_name).time().".".$request->file('image')->getClientOriginalExtension();
+        $imageName = Str::uuid().time().'.'.$image->getClientOriginalExtension();
+        $newImagePath = $image->storeAs('uploads/'. $instanceName, $imageName, ['disk' => 'uploads']); 
+        return [
+            'name' => $imageName,
+            'path' => $newImagePath,
+        ];
+    }
+________________________________
+Setting Change password
+________________________________
+    Note:
+        'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        == معناها بدل ما اكتب اللي تحت ده كله وكمان الرجيولر اكسبرشن تغني عنه ==        
+        'password' => ['nullable','confirmed', 'min:8', 'letters', 'mixedCase', 'numbers', 'symbols']
+        // Password must meet security requirements: at least 8 characters long and include letters, numbers, and special characters.
+
+    - Password: M@i1234567
+    - updatePassword(Request $request)
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+        
+        $user = auth()->user();
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        $user->notify(new PasswordChangedNotification());
+
+        Session::flash('success', 'Password Updated Successfuly');
+        return redirect()->back();
+
+    - make notification
+        - toMail(object $notifiable): MailMessage
+            return (new MailMessage)
+                ->action('Setting Page', url('/home/user/dashboard/settings'))
+                ->subject('Password Updated')
+                ->line('Password Updated Successfuly')
+                ->line('If you didn`t do it, you should call support team');
+
+    - in User model casts()
+        'password' => 'hashed' => (So you do not need) => 'password' => Hash::make($request->password)
+    - logout from all devices 
+        الخطوات الأساسية لمسح التوكنات القديمة:
+        1️⃣ Sanctum || 
+                التوكنات عادة بتخزن في جدول personal_access_tokens.
+                لو عايز تمسح كل التوكنات القديمة ما عدا التوكن الحالي:
+                    use Laravel\Sanctum\PersonalAccessToken;
+                    $user = auth()->user();
+                    حذف كل التوكنات القديمة:
+                    $user->tokens()->where('id', '!=', $request->user()->currentAccessToken()->id)->delete();
+
+                إذا كنت تريد مسح كل التوكنات بما فيها الحالي (يعني تسجيل الخروج من كل الأجهزة)، استخدم:
+                    $user->tokens()->delete();
+
+        2️⃣ Passport
+                نفس الفكرة، لكن التوكنات موجودة في جدول oauth_access_tokens
+                مثال لحذف كل التوكنات النشطة ما عدا الحالي:
+                    $user = auth()->user();
+                    $currentTokenId = $request->user()->token()->id;
+                    $user->tokens()->where('id', '!=', $currentTokenId)->delete();
+
+                أو لحذف كل التوكنات:
+                    $user->tokens()->delete();
+        2️⃣ No sanctum or Passport
+            auth()->logoutOtherDevices($request->password);
+
+            62---> 17:
+
+
+Static or Dependency injency:-
+    ⇒ اعمل Service وحقنه DI
+        لو الميثود فيها | رفع ملفات | علاقات DB | Access للـ  models | business logic
+
+    ⇒ static
+        function صغيرة جدًا | pure function
+
+    ليه static مش الأفضل؟
+        الميثود الـ static بتسبب مشاكل:
+        ❌ 1. صعب تختبرها (Testing)
+        لأنك مش هتقدر تعمل mock للكلاس بسهولة.
+        ❌ 2. بتكسر مبدأ SOLID (خاصة الـ Dependency Inversion)
+        ❌ 3. صعب تعمل override أو تمديد للكلاس
+        ❌ 4. كل حاجة تبقى global وده مش نظيف في Laravel
+
+    📌 ليه Dependency Injection أفضل؟
+        ✔ 1. تقدر تغيّر implementation بسهولة
+        ✔ 2. تقدر تعتمد على container تبع Laravel
+        ✔ 3. تقدر تعمل mocking بسهولة في الاختبارات
+        ✔ 4. الكود بيبقى قابل للتوسع والصيانة

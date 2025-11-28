@@ -58,8 +58,8 @@
                                 @csrf
                                 <input type="text" name="value" placeholder="Add a comment..."/>
                                 <input type="hidden" name="post_id" value={{ $post_by_slug->id }}>
-                                <input type="hidden" name="user_id" value=1>
-                                {{-- <input type="text" name="user_id" value={{ auth()->user()->id }} hidden/> --}}
+                                {{-- <input type="hidden" name="user_id" value=1> --}}
+                                <input type="text" name="user_id" value={{ auth()->user()->id }} hidden/>
                                 <button type="submit">Add Comment</button>
                             </div>
                         </form>
@@ -140,7 +140,7 @@
 
                         <div class="sidebar-widget">
                             <div class="image">
-                                <a href=""><img src={{ Storage::url('images/download.jpg') }} alt="Image"
+                                <a href=""><img src={{ Storage::url('images/hero.jpg') }} alt="Image"
                                         width="320px" height="150px" /></a>
                             </div>
                         </div>
@@ -213,7 +213,7 @@
 
                         <div class="sidebar-widget">
                             <div class="image">
-                                <a href=""><img src={{ Storage::url('images/download.jpg') }} alt="Image"
+                                <a href=""><img src={{ Storage::url('images/hero.jpg') }} alt="Image"
                                         width="320px" height="150px" /></a>
                             </div>
                         </div>
@@ -241,7 +241,7 @@
 
                         <div class="sidebar-widget">
                             <div class="image">
-                                <a href=""><img src={{ Storage::url('images/download.jpg') }} alt="Image"
+                                <a href=""><img src={{ Storage::url('images/hero.jpg') }} alt="Image"
                                         width="320px" height="150px" /></a>
                             </div>
                         </div>

@@ -61,8 +61,9 @@ class ProfileController extends Controller
     }
 
     public function editPost(Post $post){
-        return view('backend.user-dashboard.edit-post', compact('posts'));
+        return view('backend.user-dashboard.edit-post', compact('post'));
     }
+    
     public function destroyPost(Post $post, ImageManager $imageManager){
         try{
             DB::beginTransaction();

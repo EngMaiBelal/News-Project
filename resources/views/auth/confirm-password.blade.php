@@ -1,4 +1,4 @@
-@section
+@section('title')
     {{__('Confirm-Password')}}
 @endsection
 @extends('layouts.frontend.app')

@@ -5,7 +5,7 @@
             <img src={{ Storage::url('images/' . $settings->logo) }} alt="Logo" style="width: 5rem; border-radius:2.5rem !important"/>
         </a>
         <a class="navbar-brand" href="{{ route('home.index') }}">
-            {{ config('app.name', 'Laravel') }}
+            {{ config('app.name', 'News') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -49,7 +49,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('home.user.dashboard.profile') }}">
+                            <a class="dropdown-item" href="{{ route('home.user.dashboard.profile.post.index') }}">
                                 {{ __('Profile') }}
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -91,7 +91,7 @@
                     </div>
                     {{-- <a href="{{ route('home.about')}}" class="nav-item nav-link">Single Page</a> --}}
                     <a href="{{ route('home.contact.index') }}" class="nav-item nav-link">Contact Us</a>
-                    <a href="{{ route('home.user.dashboard.profile') }}" class="nav-item nav-link">Dashboard</a>
+                    <a href="{{ route('home.user.dashboard.profile.post.index') }}" class="nav-item nav-link">Dashboard</a>
                 </div>
                 <div class="social ml-auto">
                     @auth<a href="{{ route('home.user.dashboard.notifications.index') }}" title="notification"><i class="fas fa-bell"></i></a>@endauth

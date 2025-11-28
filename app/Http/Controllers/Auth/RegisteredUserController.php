@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\View\View;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
+use App\Utils\ImageManager;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\Auth\RegisterRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -28,25 +27,9 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RegisterRequest $request, ImageManager $imageManager): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'user_name' =>['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required','regex:/(01)[0-9]{9}/', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'country' => ['required', 'string', 'max:50'],
-            'city' => ['required', 'string', 'max:50'],
-            'street' => ['required', 'string', 'max:50'],
-            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // kilobyte
-        ]);
-
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imageName = Str::slug($request->user_name).time().".".$request->file('image')->getClientOriginalExtension();
-            $imagePath = $request->file('image')->storeAs('uploads/images/users', $imageName, ['disk'=> 'uploads']);
-        }
+       $imageData = $imageManager->uploadImage($request, "users");
 
         $user = User::create([
             'name' => $request->name,
@@ -56,7 +39,8 @@ class RegisteredUserController extends Controller
             'country' => $request->country,
             'city' => $request->city,
             'street' => $request->street,
-            'image' => $imagePath,
+            'image' => $imageData['path'],
+            'bio' => $request->bio,
             'password' => Hash::make($request->password),
         ]);
 
@@ -67,6 +51,6 @@ class RegisteredUserController extends Controller
         flash()->success("Register Successfully");
         
         return redirect(route('home.index', absolute: false));
-        // return redirect(route('home.user.dashboard.profile', absolute: false));
+        // return redirect(route('home.user.dashboard.profile.post.index', absolute: false));
     }
 }

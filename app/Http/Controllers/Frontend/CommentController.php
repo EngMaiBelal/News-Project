@@ -19,7 +19,8 @@ class CommentController extends Controller
             // Attempt to create a new comment
             $comment = Comment::create([
                 'value' => $comment_validated['value'],
-                'ip_address' => $request->ip(), // Local IP (e.g., 198.172.0.1), on server, it will be the IP of the client
+                // Local IP (e.g., 198.172.0.1), on server, it will be the IP of the client
+                'ip_address' => $request->ip(), 
                 'post_id' => $comment_validated['post_id'],
                 'user_id' => $comment_validated['user_id'],
             ]);

@@ -13,6 +13,10 @@ a {
   transition: 0.5s;
 }
 
+.password-hint{
+  color: #63b59f;
+}
+
 a:hover,
 a:active,
 a:focus {

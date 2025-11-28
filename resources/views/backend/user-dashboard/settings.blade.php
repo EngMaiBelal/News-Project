@@ -9,119 +9,169 @@
     @parent
     <li class="breadcrumb-item active">{{ __('Settings') }}</li>
 @endsection
-
-@section('content') 
+@section('content')
     <!-- Dashboard Start-->
     <div class="dashboard container">
-      <!-- Sidebar -->
-      <aside class="col-md-3 nav-sticky dashboard-sidebar">
-        <!-- User Info Section -->
-        <div class="user-info text-center p-3">
-            <img src="{{ auth()->user()->image}}" alt="User Image" class="rounded-circle mb-2"
-                style="width: 80px; height: 80px; object-fit: cover" />
-            <h5 class="mb-0" style="color: #ff6f61">
-                {{ ucfirst(Auth::user()->name) }}
-            </h5>
-        </div>
+        <!-- Sidebar -->
+        @include('layouts.backend.sidebar')
+
+        <!-- Main Content -->
+          <div class="main-content">
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+              <h2>Settings</h2>
+              <form action="{{ route('home.user.dashboard.settings.update') }}" class="settings-form" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                  <label for="name">Name:</label>
+                  <input name="name" type="text" id="name" value="{{ ucfirst(auth()->user()->name) }}" />
+                  @error('name') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="username">Username:</label>
+                  <input name="user_name" type="text" id="username" value="{{ ucfirst(auth()->user()->user_name) }}" />
+                  @error('user_name') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input name="email" type="email" id="email" value="{{ auth()->user()->email }}" />
+                  @error('email') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone:</label>
+                  <input name="phone" type="text" id="phone" value="{{ auth()->user()->phone }}" />
+                  @error('phone') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                    <label for="profile-image">Profile Image:</label>
+                    <div class="d-flex justify-content-between w-100">
+
+                        @if(auth()->user()->image)
+                            <img src="{{ asset(auth()->user()->image) }}" id="preview-image" alt="Profile Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                        @endif
     
-        <!-- Sidebar Menu -->
-        <div class="list-group profile-sidebar-menu">
-            <a href="{{ route('home.user.dashboard.profile') }}" class="list-group-item list-group-item-action active menu-item"
-                data-section="profile">
-                <i class="fas fa-user"></i> {{__('Profile')}}
-            </a>
-            <a href="{{ route('home.user.dashboard.notifications.index') }}" class="list-group-item list-group-item-action menu-item"
-                data-section="notifications">
-                <i class="fas fa-bell"></i> {{__('Notifications')}}
-            </a>
-            <a href="{{ route('home.user.dashboard.settings.index') }}" class="list-group-item list-group-item-action menu-item" data-section="settings">
-                <i class="fas fa-cog"></i> {{__('Settings')}}
-            </a>
+                      {{-- change image --}}
+                      <input name="image" type="file" id="profile-image" accept="image/*" class="flex-grow-1"/>
+                      
+                    </div>
+                    {{-- Current Image --}}
+                  @error('image') 
+                      <div class="alert alert-danger">
+                          {{ $message }}
+                      </div>
+                  @enderror
+              </div>
+                <div class="form-group">
+                  <label for="country">Country:</label>
+                  <input name="country" type="text" id="country" value="{{ auth()->user()->country }}" />
+                  @error('country') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="city">City:</label>
+                  <input name="city" type="text" id="city" value="{{ auth()->user()->city }}">
+                  @error('city') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="street">Street:</label>
+                  <input name="street" type="text" id="street" value="{{ auth()->user()->street }}"/>
+                  @error('street') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="bio">Bio:</label>
+                  <textarea name="bio" id="bio" placeholder="Tell us about yourself..."></textarea>
+                  @error('bio') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <button type="submit" class="save-settings-btn">
+                  Save Changes
+                </button>
+              </form>
+
+              <!-- Form to change the password -->
+              <form action="{{ route('home.user.dashboard.settings.update.password') }}" class="change-password-form" method="post">
+                @csrf
+                <h2>Change Password</h2>
+                <div class="form-group">
+                  <label for="currentPassword">Current Password:</label>
+                  <input name="current_password" type="password" id="currentPassword" placeholder="Enter Current Password"/>
+                </div>
+                  @error('current_password') 
+                    <div class="alert alert-danger">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                <div class="form-group mb-3">
+                  <label for="newPassword">New Password:</label>
+                  <input name="password" type="password" id="newPassword" placeholder="Enter New Password"/>
+                  <span class="password-hint">Password must be at least 8 characters long and include letters, numbers, and special characters.</span>
+                </div>
+                @error('password') 
+                  <div class="alert alert-danger">
+                    {{ $message }}
+                  </div>
+                @enderror
+                <div class="form-group">
+                  <label for="confirm-password">Confirm New Password:</label>
+                  <input name="password_confirmation" type="password" id="confirm-password" placeholder="Enter Confirm New"/>
+                </div>
+                @error('confirm_password') 
+                  <div class="alert alert-danger">
+                    {{ $message }}
+                  </div>
+                @enderror
+                <button type="submit" class="w-100 save-settings-btn">
+                  Change Password
+                </button>
+              </form>
+            </section>
+          </div>
         </div>
-    </aside>
-
-      <!-- Main Content -->
-      <div class="main-content">
-        <!-- Settings Section -->
-        <section id="settings" class="content-section">
-          <h2>Settings</h2>
-          <form class="settings-form">
-            <div class="form-group">
-              <label for="username">Username:</label>
-              <input type="text" id="username" value="{{ ucfirst(auth()->user()->name) }}" />
-            </div>
-            <div class="form-group">
-              <label for="email">Email:</label>
-              <input type="email" id="email" value="{{ auth()->user()->email }}" />
-            </div>
-            <div class="form-group">
-              <label for="profile-image">Profile Image:</label>
-              <input type="file" id="profile-image" accept="image/*" />
-            </div>
-            <div class="form-group">
-              <label for="country">Country:</label>
-              <input
-                type="text"
-                id="country"
-                placeholder="Enter your country"
-              />
-            </div>
-            <div class="form-group">
-              <label for="city">City:</label>
-              <input type="text" id="city" placeholder="Enter your city" />
-            </div>
-            <div class="form-group">
-              <label for="street">Street:</label>
-              <input type="text" id="street" placeholder="Enter your street" />
-            </div>
-            <div class="form-group">
-              <label for="bio">Bio:</label>
-              <textarea
-                id="bio"
-                placeholder="Tell us about yourself..."
-              ></textarea>
-            </div>
-            <button type="submit" class="save-settings-btn">
-              Save Changes
-            </button>
-          </form>
-
-          <!-- Form to change the password -->
-          <form class="change-password-form">
-            <h2>Change Password</h2>
-            <div class="form-group">
-              <label for="current-password">Current Password:</label>
-              <input
-                type="password"
-                id="current-password"
-                placeholder="Enter Current Password"
-              />
-            </div>
-            <div class="form-group">
-              <label for="new-password">New Password:</label>
-              <input
-                type="password"
-                id="new-password"
-                placeholder="Enter New Password"
-              />
-            </div>
-            <div class="form-group">
-              <label for="confirm-password">Confirm New Password:</label>
-              <input
-                type="password"
-                id="confirm-password"
-                placeholder="Enter Confirm New "
-              />
-            </div>
-            <button type="submit" class="change-password-btn">
-              Change Password
-            </button>
-          </form>
-        </section>
-      </div>
-    </div>
-    <!-- Dashboard End-->
+        <!-- Dashboard End-->
 @endsection
 @section('footer')
     @include('layouts.backend.footer')
 @endsection
+@push('js')
+        <script>
+            const input = document.getElementById('profile-image');
+            const preview = document.getElementById('preview-image');
+    
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if(file) {
+                    preview.src = URL.createObjectURL(file);
+                }
+            });
+        </script>
+@endpush

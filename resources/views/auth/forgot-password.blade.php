@@ -1,4 +1,4 @@
-@section
+@section('title')
     {{__('Forget-Password')}}
 @endsection
 @extends('layouts.frontend.app')
